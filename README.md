@@ -1,4 +1,4 @@
-# nlp-capston: AI-Powered Political Bias and Sentiment Detection Web App
+# nlp-capstone: AI-Powered Political Bias and Sentiment Detection Web App
 
 ## Overview
 
