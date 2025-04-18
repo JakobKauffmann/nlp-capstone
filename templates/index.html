@@ -1,0 +1,578 @@
+{% extends "base.html" %}
+
+{% block title %}AI-Powered Political Bias & Sentiment Analyzer{% endblock %}
+
+{% block content %}
+<!-- Landing Page -->
+<div id="landingPage" class="flex flex-col items-center justify-center h-full">
+    <div class="max-w-3xl text-center">
+        <div class="flex justify-center mb-6">
+            <img src="{{ url_for('static', filename='images/light-logo.svg') }}" alt="Logo" class="h-24 light-logo pulse-animation">
+            <img src="{{ url_for('static', filename='images/dark-logo.svg') }}" alt="Logo" class="h-24 dark-logo pulse-animation">
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-6">AI-Powered Political Bias & Sentiment Analyzer</h1>
+        <p class="text-xl text-gray-600 mb-8">
+            Analyze political bias and sentiment in news articles, speeches, and social media content.
+            Get instant insights into the political leaning and emotional tone of any text or URL.
+        </p>
+        <button id="startAnalyzing" class="px-8 py-4 gradient-bg text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 pulse-animation">
+            Start Analyzing <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+    </div>
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl">
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div class="text-blue-500 mb-4">
+                <i class="fas fa-link text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">URL Analysis</h3>
+            <p class="text-gray-600">Paste any news article URL and get a comprehensive bias breakdown.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div class="text-green-500 mb-4">
+                <i class="fas fa-align-left text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Text Analysis</h3>
+            <p class="text-gray-600">Analyze direct text input for political sentiment and leanings.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div class="text-purple-500 mb-4">
+                <i class="fas fa-chart-pie text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Visual Reports</h3>
+            <p class="text-gray-600">Get easy-to-understand visualizations of the analysis results.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Analysis Page (hidden by default) -->
+<div id="analysisPage" class="hidden">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800">Analyze Content</h2>
+                    <div class="flex space-x-2">
+                        <button id="urlButton" class="input-type-btn px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200" data-input-type="url">
+                            <i class="fas fa-link mr-1"></i> URL
+                        </button>
+                        <button id="textButton" class="input-type-btn px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200" data-input-type="text">
+                            <i class="fas fa-align-left mr-1"></i> Text
+                        </button>
+                        <button id="topicButton" class="input-type-btn px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200" data-input-type="topic">
+                            <i class="fas fa-search mr-1"></i> Topic
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <textarea id="contentInput" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" rows="6" placeholder="Paste a URL or text content here..."></textarea>
+                    <div class="text-right text-sm text-gray-500 mt-1"><span id="charCount">0</span>/5000</div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button id="analyzeButton" class="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Analyze <i class="fas fa-search ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State (hidden by default) -->
+        <div id="loadingState" class="hidden bg-white rounded-xl shadow-md overflow-hidden mb-6">
+            <div class="p-6">
+                <div class="flex flex-col items-center">
+                    <div class="mb-4">
+                        <i class="fas fa-spinner fa-spin text-blue-500 text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Analyzing Content</h3>
+                    <p class="text-gray-500" id="loadingMessage">Processing your input...</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+                        <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 10%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section (hidden by default) -->
+        <div id="resultsSection" class="hidden">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Analysis Results</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="result-card bg-white p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <div class="p-2 bg-red-100 rounded-full mr-3">
+                                    <i class="fas fa-balance-scale text-red-500"></i>
+                                </div>
+                                <h3 class="font-medium">Political Bias</h3>
+                            </div>
+                            <div class="ml-11">
+                                <p class="text-sm text-gray-600 mb-2" id="biasLabel">Analyzing...</p>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="biasIndicator" class="bg-gradient-to-r from-blue-500 to-red-500 h-2.5 rounded-full" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-card bg-white p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <div class="p-2 bg-yellow-100 rounded-full mr-3">
+                                    <i class="fas fa-smile text-yellow-500"></i>
+                                </div>
+                                <h3 class="font-medium">Sentiment</h3>
+                            </div>
+                            <div class="ml-11">
+                                <p class="text-sm text-gray-600 mb-2" id="sentimentLabel">Analyzing...</p>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="sentimentIndicator" class="bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 h-2.5 rounded-full" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-card bg-white p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-2">
+                                <div class="p-2 bg-purple-100 rounded-full mr-3">
+                                    <i class="fas fa-chart-line text-purple-500"></i>
+                                </div>
+                                <h3 class="font-medium">Credibility</h3>
+                            </div>
+                            <div class="ml-11">
+                                <p class="text-sm text-gray-600 mb-2" id="credibilityLabel">Analyzing...</p>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="credibilityIndicator" class="bg-gradient-to-r from-red-500 to-green-500 h-2.5 rounded-full" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 mb-2">Key Findings</h3>
+                        <div class="bg-white p-4 rounded-lg">
+                            <ul id="keyFindings" class="list-disc list-inside space-y-1 text-gray-700">
+                                <li>Analyzing content...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-medium text-gray-700 mb-2">Detailed Analysis</h3>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="border-b border-gray-200">
+                                <div class="flex -mb-px">
+                                    <button id="biasTab" class="analysis-tab py-2 px-4 border-b-2 font-medium text-sm border-blue-500 text-blue-600">Bias Breakdown</button>
+                                    <button id="sentimentTab" class="analysis-tab py-2 px-4 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Sentiment Analysis</button>
+                                    <button id="summaryTab" class="analysis-tab py-2 px-4 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Summary</button>
+                                </div>
+                            </div>
+
+                            <!-- Bias Breakdown Tab -->
+                            <div id="biasContent" class="analysis-content p-4">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <h4 class="font-medium" id="biasIndicatorTitle">Analyzing Bias Indicators</h4>
+                                        <p class="text-sm text-gray-600" id="biasIndicatorCount">Please wait...</p>
+                                    </div>
+                                    <span id="biasStrength" class="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">Analyzing</span>
+                                </div>
+                                <div id="biasIndicators" class="space-y-3">
+                                    <!-- Indicators will be populated here -->
+                                    <div class="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
+                                    <div class="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
+                                    <div class="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sentiment Analysis Tab (hidden by default) -->
+                            <div id="sentimentContent" class="analysis-content p-4 hidden">
+                                <div class="flex justify-center mb-6">
+                                    <canvas id="sentimentChart" height="200"></canvas>
+                                </div>
+                                <div id="sentimentSummary" class="text-gray-700">
+                                    Analyzing sentiment patterns...
+                                </div>
+                            </div>
+
+                            <!-- Summary Tab (hidden by default) -->
+                            <div id="summaryContent" class="analysis-content p-4 hidden">
+                                <p id="contentSummary" class="text-gray-700">
+                                    Generating summary...
+                                </p>
+
+                                <!-- Contrasting Views (for topic search) -->
+                                <div id="contrastingViews" class="mt-6 hidden">
+                                    <h4 class="font-medium mb-4">Contrasting Viewpoints</h4>
+                                    <div id="viewsContainer" class="space-y-4">
+                                        <!-- Views will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button class="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 mr-2">
+                    <i class="fas fa-download mr-1"></i> Export
+                </button>
+                <button id="newAnalysisBtn" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                    <i class="fas fa-plus mr-1"></i> New Analysis
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Current input type
+    let currentInputType = 'url';
+
+    // DOM Elements
+    const startAnalyzingBtn = document.getElementById('startAnalyzing');
+    const landingPage = document.getElementById('landingPage');
+    const analysisPage = document.getElementById('analysisPage');
+    const inputTypeBtns = document.querySelectorAll('.input-type-btn');
+    const contentInput = document.getElementById('contentInput');
+    const charCount = document.getElementById('charCount');
+    const analyzeButton = document.getElementById('analyzeButton');
+    const loadingState = document.getElementById('loadingState');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const progressBar = document.getElementById('progressBar');
+    const resultsSection = document.getElementById('resultsSection');
+    const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+
+    // Function to load history item
+    function loadHistoryItem(element) {
+        // Get data from clicked history item
+        const inputType = element.getAttribute('data-input-type');
+        const inputValue = element.getAttribute('data-input-value');
+
+        // Switch to analysis page if we're on landing page
+        if (!landingPage.classList.contains('hidden')) {
+            landingPage.classList.add('hidden');
+            analysisPage.classList.remove('hidden');
+        }
+
+        // Select the correct input type button
+        inputTypeBtns.forEach(btn => {
+            if (btn.getAttribute('data-input-type') === inputType) {
+                btn.click();
+            }
+        });
+
+        // Fill in the input value
+        contentInput.value = inputValue;
+        charCount.textContent = inputValue.length;
+
+        // Trigger analysis
+        analyzeButton.click();
+
+        // If the sidebar is collapsed on mobile, toggle it
+        if (window.innerWidth < 768) {
+            document.querySelector('.sidebar').classList.add('collapsed');
+        }
+    }
+
+    // Analysis tabs
+    const analysisTabs = document.querySelectorAll('.analysis-tab');
+    const analysisContents = document.querySelectorAll('.analysis-content');
+
+    // Character Counter
+    contentInput.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+        if (this.value.length > 4800) {
+            charCount.classList.add('text-red-500');
+        } else {
+            charCount.classList.remove('text-red-500');
+        }
+    });
+
+    // Switch from landing page to analysis page
+    startAnalyzingBtn.addEventListener('click', function() {
+        landingPage.classList.add('hidden');
+        analysisPage.classList.remove('hidden');
+    });
+
+    // Input Type Selection
+    inputTypeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            inputTypeBtns.forEach(b => {
+                b.classList.remove('bg-blue-100', 'text-blue-700');
+                b.classList.add('bg-gray-100', 'text-gray-700');
+            });
+
+            this.classList.remove('bg-gray-100', 'text-gray-700');
+            this.classList.add('bg-blue-100', 'text-blue-700');
+
+            currentInputType = this.getAttribute('data-input-type');
+
+            // Update placeholder based on input type
+            if (currentInputType === 'url') {
+                contentInput.placeholder = 'Paste a news article URL here (e.g., https://news.example.com/article)';
+            } else if (currentInputType === 'text') {
+                contentInput.placeholder = 'Paste the article text here (limit: 5000 characters)';
+            } else { // topic
+                contentInput.placeholder = 'Enter a topic to search and analyze (e.g., climate change, election)';
+            }
+        });
+    });
+
+    // Analysis Tabs
+    analysisTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            analysisTabs.forEach(t => {
+                t.classList.remove('border-blue-500', 'text-blue-600');
+                t.classList.add('border-transparent', 'text-gray-500');
+            });
+
+            // Add active class to clicked tab
+            this.classList.remove('border-transparent', 'text-gray-500');
+            this.classList.add('border-blue-500', 'text-blue-600');
+
+            // Hide all content sections
+            analysisContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Show the matching content section
+            const contentId = this.id.replace('Tab', 'Content');
+            document.getElementById(contentId).classList.remove('hidden');
+        });
+    });
+
+    // Analyze Button
+    analyzeButton.addEventListener('click', function() {
+        const input = contentInput.value.trim();
+        if (input) {
+            // Hide analysis form and show loading state
+            analysisPage.querySelector('.bg-white').classList.add('hidden');
+            loadingState.classList.remove('hidden');
+
+            // Simulate progress
+            let progress = 10;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10);
+                if (progress > 90) progress = 90;
+                progressBar.style.width = `${progress}%`;
+
+                // Update loading message
+                if (progress < 30) {
+                    loadingMessage.textContent = 'Processing your input...';
+                } else if (progress < 60) {
+                    loadingMessage.textContent = 'Analyzing political patterns...';
+                } else {
+                    loadingMessage.textContent = 'Generating insights...';
+                }
+            }, 500);
+
+            // API call to backend
+            fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ input_type: currentInputType, input_value: input }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Analysis failed. Please try again.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Stop the progress simulation
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                loadingMessage.textContent = 'Analysis complete!';
+
+                // Hide loading state and show results
+                setTimeout(() => {
+                    loadingState.classList.add('hidden');
+                    resultsSection.classList.remove('hidden');
+
+                    // Update results with data
+                    updateResults(data);
+                }, 500);
+            })
+            .catch(error => {
+                // Stop the progress simulation
+                clearInterval(interval);
+
+                // Show error state
+                loadingMessage.textContent = 'Error: ' + error.message;
+                loadingMessage.classList.add('text-red-500');
+                progressBar.style.width = '100%';
+                progressBar.classList.remove('bg-blue-600');
+                progressBar.classList.add('bg-red-500');
+
+                // Re-enable analysis after a delay
+                setTimeout(() => {
+                    loadingState.classList.add('hidden');
+                    analysisPage.querySelector('.bg-white').classList.remove('hidden');
+                }, 3000);
+            });
+        } else {
+            // Show validation error
+            contentInput.classList.add('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+            setTimeout(() => {
+                contentInput.classList.remove('border-red-500', 'focus:ring-red-500', 'focus:border-red-500');
+            }, 3000);
+        }
+    });
+
+    // New Analysis Button
+    newAnalysisBtn.addEventListener('click', function() {
+        // Hide results and show analysis form
+        resultsSection.classList.add('hidden');
+        analysisPage.querySelector('.bg-white').classList.remove('hidden');
+
+        // Reset form
+        contentInput.value = '';
+        charCount.textContent = '0';
+    });
+
+    // Update Results
+    function updateResults(data) {
+        // Update bias indicators
+        document.getElementById('biasLabel').textContent = data.bias;
+        document.getElementById('biasIndicator').style.width = `${data.bias_value}%`;
+
+        // Update sentiment indicators
+        document.getElementById('sentimentLabel').textContent = data.sentiment;
+        document.getElementById('sentimentIndicator').style.width = `${data.sentiment_value}%`;
+
+        // Update credibility indicator
+        document.getElementById('credibilityLabel').textContent = 'Moderate';
+        document.getElementById('credibilityIndicator').style.width = `${data.credibility_value}%`;
+
+        // Update key findings
+        const keyFindingsEl = document.getElementById('keyFindings');
+        keyFindingsEl.innerHTML = '';
+        data.key_findings.forEach(finding => {
+            const li = document.createElement('li');
+            li.textContent = finding;
+            li.className = 'text-gray-700';
+            keyFindingsEl.appendChild(li);
+        });
+
+        // Update bias indicators
+        const biasIndicatorsEl = document.getElementById('biasIndicators');
+        biasIndicatorsEl.innerHTML = '';
+
+        document.getElementById('biasIndicatorTitle').textContent = `${data.bias}-Leaning Indicators`;
+        document.getElementById('biasIndicatorCount').textContent = `${data.indicators.length} indicators detected`;
+        document.getElementById('biasStrength').textContent = data.bias_value > 70 ? 'Strong' : data.bias_value > 40 ? 'Moderate' : 'Weak';
+
+        data.indicators.forEach(indicator => {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <div class="flex justify-between text-sm mb-1">
+                    <span>${indicator.name}</span>
+                    <span>${indicator.value > 80 ? 'Very High' : indicator.value > 60 ? 'High' : indicator.value > 40 ? 'Moderate' : indicator.value > 20 ? 'Low' : 'Very Low'}</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-1.5">
+                    <div class="${data.bias === 'Left' ? 'bg-blue-500' : data.bias === 'Right' ? 'bg-red-500' : 'bg-yellow-500'} h-1.5 rounded-full" style="width: ${indicator.value}%"></div>
+                </div>
+            `;
+            biasIndicatorsEl.appendChild(div);
+        });
+
+        // Update sentiment chart
+        const sentimentChartCtx = document.getElementById('sentimentChart').getContext('2d');
+        if (window.sentimentChart) {
+            window.sentimentChart.destroy();
+        }
+
+        window.sentimentChart = new Chart(sentimentChartCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(data.visualization_data.sentiment_distribution),
+                datasets: [{
+                    data: Object.values(data.visualization_data.sentiment_distribution),
+                    backgroundColor: [
+                        'rgba(76, 175, 80, 0.7)',  // Green for Positive
+                        'rgba(255, 183, 77, 0.7)', // Orange for Neutral
+                        'rgba(244, 67, 54, 0.7)'   // Red for Negative
+                    ],
+                    borderColor: [
+                        'rgba(76, 175, 80, 1)',
+                        'rgba(255, 183, 77, 1)',
+                        'rgba(244, 67, 54, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Sentiment Distribution',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update summary
+        document.getElementById('contentSummary').textContent = data.summary;
+
+        // Update contrasting views for topic search
+        if (currentInputType === 'topic' && data.contrasting_views && data.contrasting_views.length > 0) {
+            const viewsContainer = document.getElementById('viewsContainer');
+            viewsContainer.innerHTML = '';
+
+            data.contrasting_views.forEach(view => {
+                const viewEl = document.createElement('div');
+                viewEl.className = `border-l-4 ${view.bias === 'Left' ? 'border-blue-500' : view.bias === 'Right' ? 'border-red-500' : 'border-yellow-500'} pl-4 py-2`;
+                viewEl.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h5 class="font-medium">${view.title}</h5>
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full ${view.bias === 'Left' ? 'bg-blue-100 text-blue-800' : view.bias === 'Right' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}">${view.bias}</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-1">Source: ${view.source}</p>
+                    <p class="text-gray-700">${view.summary}</p>
+                `;
+                viewsContainer.appendChild(viewEl);
+            });
+
+            document.getElementById('contrastingViews').classList.remove('hidden');
+        } else {
+            document.getElementById('contrastingViews').classList.add('hidden');
+        }
+    }
+
+    // Initialize with URL input selected
+    document.getElementById('urlButton').click();
+
+    // Fix chart colors based on theme
+    function updateChartColors() {
+        if (window.sentimentChart) {
+            const isDark = document.documentElement.classList.contains('dark');
+            window.sentimentChart.options.plugins.legend.labels.color = isDark ? '#f1f5f9' : '#1e293b';
+            window.sentimentChart.options.plugins.title.color = isDark ? '#f1f5f9' : '#1e293b';
+            window.sentimentChart.update();
+        }
+    }
+
+    // Listen for theme changes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === "class") {
+                updateChartColors();
+            }
+        });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+</script>
+{% endblock %}

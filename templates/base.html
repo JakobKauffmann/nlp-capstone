@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI-Powered Political Bias & Sentiment Analyzer{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        :root {
+            /* Light mode colors */
+            --bg-primary: #ebebeb;
+            --bg-secondary: #e7e7e7;
+            --text-primary: #272727;
+            --text-secondary: #494949;
+            --text-muted: #7b7b7b;
+            --border-color: #cfcfcf;
+            --primary-color: #0364e1;
+            --primary-hover: #0068f0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+
+            /* Theme transition */
+            --transition-time: 0.3s;
+        }
+
+        /* Dark mode colors */
+        html.dark {
+            --bg-primary: #1d1d1e;
+            --bg-secondary: #353535;
+            --text-primary: #ffffff;
+            --text-secondary: #eaeaea;
+            --text-muted: #9e9f9f;
+            --border-color: #4a4a4b;
+            --primary-color: #0259d0;
+            --primary-hover: #005fe3;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Base styles */
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color var(--transition-time), color var(--transition-time);
+        }
+
+        .sidebar {
+            transition: all var(--transition-time);
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+            opacity: 0;
+            width: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Header and cards */
+        header {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+        }
+
+        .card, .bg-white {
+            background-color: var(--bg-secondary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Text colors */
+        .text-gray-900, h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary) !important;
+        }
+
+        .text-gray-800 {
+            color: var(--text-primary) !important;
+        }
+
+        .text-gray-700 {
+            color: var(--text-secondary) !important;
+        }
+
+        .text-gray-600, .text-gray-500 {
+            color: var(--text-muted) !important;
+        }
+
+        /* Border colors */
+        .border-gray-200, .border-gray-300 {
+            border-color: var(--border-color) !important;
+        }
+
+        /* Background colors */
+        .bg-gray-100, .bg-gray-50 {
+            background-color: var(--bg-primary) !important;
+        }
+
+        /* Buttons */
+        .bg-blue-600 {
+            background-color: var(--primary-color) !important;
+        }
+
+        .bg-blue-700, .hover\:bg-blue-700:hover {
+            background-color: var(--primary-hover) !important;
+        }
+
+        /* Shadows */
+        .shadow-md, .shadow-sm, .shadow-lg {
+            box-shadow: 0 4px 6px var(--shadow-color) !important;
+        }
+
+        .hover\:shadow-lg:hover {
+            box-shadow: 0 10px 15px var(--shadow-color) !important;
+        }
+
+        /* Animations */
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+        }
+
+        html.dark .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .result-card {
+            transition: all var(--transition-time);
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px var(--shadow-color), 0 10px 10px -5px var(--shadow-color) !important;
+        }
+
+        /* Light/Dark mode logo handling */
+        .light-logo {
+            display: block;
+        }
+
+        .dark-logo {
+            display: none;
+        }
+
+        html.dark .light-logo {
+            display: none;
+        }
+
+        html.dark .dark-logo {
+            display: block;
+        }
+
+        /* Forms */
+        input, textarea, select {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+
+        /* User preference override */
+        @media (prefers-color-scheme: dark) {
+            html:not(.light):not(.dark) {
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --text-primary: #f1f5f9;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --border-color: #334155;
+                --primary-color: #3b82f6;
+                --primary-hover: #2563eb;
+                --shadow-color: rgba(0, 0, 0, 0.3);
+            }
+
+            html:not(.light):not(.dark) .light-logo {
+                display: none;
+            }
+
+            html:not(.light):not(.dark) .dark-logo {
+                display: block;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            html:not(.light):not(.dark) {
+                --bg-primary: #f8fafc;
+                --bg-secondary: #ffffff;
+                --text-primary: #1e293b;
+                --text-secondary: #64748b;
+                --text-muted: #94a3b8;
+                --border-color: #e2e8f0;
+                --primary-color: #2563eb;
+                --primary-hover: #1d4ed8;
+                --shadow-color: rgba(0, 0, 0, 0.1);
+            }
+
+            html:not(.light):not(.dark) .light-logo {
+                display: block;
+            }
+
+            html:not(.light):not(.dark) .dark-logo {
+                display: none;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="sidebar bg-white w-64 border-r border-gray-200 flex flex-col">
+            <div class="p-4 border-b border-gray-200">
+                <img src="{{ url_for('static', filename='images/light-logo.svg') }}" alt="Logo" class="h-10 light-logo">
+                <img src="{{ url_for('static', filename='images/dark-logo.svg') }}" alt="Logo" class="h-10 dark-logo">
+            </div>
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-4">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">History</h3>
+                    <ul class="mt-2 space-y-1">
+                        {% if history %}
+                            {% for item in history %}
+                                <li>
+                                    <a href="#" class="flex flex-col px-2 py-2 text-sm font-medium text-gray-900 rounded-md hover:bg-gray-100"
+                                       data-history-id="{{ item.id }}"
+                                       data-input-type="{{ item.input_type }}"
+                                       data-input-value="{{ item.input_value }}"
+                                       onclick="loadHistoryItem(this); return false;">
+                                        <div class="flex items-center">
+                                            <i class="fas {% if item.input_type == 'url' %}fa-link{% elif item.input_type == 'text' %}fa-align-left{% else %}fa-search{% endif %} mr-3 text-gray-400"></i>
+                                            <span class="truncate max-w-[180px]">{{ item.input_value }}</span>
+                                        </div>
+                                        <div class="ml-6 text-xs text-gray-500 mt-1 flex items-center">
+                                            <span class="mr-3">{{ item.date.split(' ')[0] }}</span>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                                                {% if item.results.bias == 'Left' %}bg-blue-100 text-blue-800{% elif item.results.bias == 'Right' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                                {{ item.results.bias }}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="text-sm text-gray-500 px-2 py-2">No history yet</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+                <button id="toggleDarkMode" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    <i class="fas fa-moon mr-2"></i> Dark Mode
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white border-b border-gray-200">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center">
+                        <button id="sidebarToggle" class="mr-4 text-gray-500 hover:text-gray-600">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h1 class="text-xl font-semibold text-gray-800">Political Bias Analyzer</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 text-gray-500 hover:text-gray-600">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 focus:outline-none">
+                                <span class="inline-block h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Area -->
+            <main class="flex-1 overflow-y-auto p-4">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Theme handling
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                document.getElementById('toggleDarkMode').innerHTML = '<i class="fas fa-sun mr-2"></i> Light Mode';
+            } else {
+                document.documentElement.classList.add('light');
+                document.documentElement.classList.remove('dark');
+                document.getElementById('toggleDarkMode').innerHTML = '<i class="fas fa-moon mr-2"></i> Dark Mode';
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        // Get theme preference on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if theme preference is stored
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                setTheme(storedTheme);
+            } else {
+                // Use system preference if no stored preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setTheme('dark');
+                } else {
+                    setTheme('light');
+                }
+            }
+
+            // Listen for system preference changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem('theme')) {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        });
+
+        // Toggle sidebar - proper toggle functionality
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('collapsed');
+        });
+
+        // Toggle dark/light mode
+        document.getElementById('toggleDarkMode').addEventListener('click', function() {
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

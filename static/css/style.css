@@ -1,0 +1,308 @@
+/* ===== CUSTOMIZABLE COLOR SCHEME ===== */
+:root {
+    /* Primary colors */
+    --primary-color: #4361ee;      /* Main theme color (blue) */
+    --primary-light: #7289f7;      /* Lighter shade of primary */
+    --primary-dark: #2941c8;       /* Darker shade of primary */
+
+    /* Political bias colors */
+    --left-color: #3a7ca5;         /* Blue for left-leaning */
+    --center-color: #f2cc50;       /* Yellow for center/neutral */
+    --right-color: #d64933;        /* Red for right-leaning */
+
+    /* Sentiment colors */
+    --positive-color: #4caf50;     /* Green for positive sentiment */
+    --neutral-color: #ffb74d;      /* Orange for neutral sentiment */
+    --negative-color: #f44336;     /* Red for negative sentiment */
+
+    /* UI colors - Light Mode */
+    --background-light: #f7f9fc;
+    --card-light: #ffffff;
+    --text-light: #2e343b;
+    --border-light: #e2e8f0;
+
+    /* UI colors - Dark Mode */
+    --background-dark: #1a1f2b;
+    --card-dark: #2d3748;
+    --text-dark: #f3f4f6;
+    --border-dark: #4b5563;
+}
+
+/* ===== GENERAL STYLES ===== */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Mode (default) */
+body.light-mode {
+    background-color: var(--background-light);
+    color: var(--text-light);
+}
+
+body.light-mode .card {
+    background-color: var(--card-light);
+    border-color: var(--border-light);
+}
+
+body.light-mode .navbar {
+    background-color: var(--primary-color);
+}
+
+body.light-mode .dark-logo {
+    display: none;
+}
+
+body.light-mode .light-logo {
+    display: inline-block;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+body.dark-mode .card {
+    background-color: var(--card-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark-mode .navbar {
+    background-color: var(--primary-dark);
+}
+
+body.dark-mode .nav-tabs .nav-link.active {
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark-mode .btn-outline-secondary {
+    color: var(--text-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark-mode .light-logo {
+    display: none;
+}
+
+body.dark-mode .dark-logo {
+    display: inline-block;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    color: white;
+}
+
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.theme-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* ===== LANDING PAGE ===== */
+.landing-page {
+    padding: 5rem 0;
+}
+
+.landing-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 2rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ===== INPUT PANEL ===== */
+.input-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s;
+}
+
+.input-card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.char-count {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* ===== RESULTS PANEL ===== */
+.results-card, .visualization-card, .recommended-searches-card, .contrasting-views-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.summary-box, .raw-output-box {
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    border: 1px solid #e9ecef;
+}
+
+body.dark-mode .summary-box, body.dark-mode .raw-output-box {
+    background-color: #343a40;
+    border-color: #495057;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Sentiment badges */
+.sentiment-label .badge.Positive {
+    background-color: var(--positive-color);
+}
+
+.sentiment-label .badge.Neutral {
+    background-color: var(--neutral-color);
+}
+
+.sentiment-label .badge.Negative {
+    background-color: var(--negative-color);
+}
+
+/* Bias badges */
+.bias-label .badge.Left {
+    background-color: var(--left-color);
+}
+
+.bias-label .badge.Center {
+    background-color: var(--center-color);
+}
+
+.bias-label .badge.Right {
+    background-color: var(--right-color);
+}
+
+/* ===== VISUALIZATIONS ===== */
+.visualization-card canvas {
+    margin-bottom: 1rem;
+}
+
+/* ===== CONTRASTING VIEWS ===== */
+.view-card {
+    border-left: 5px solid;
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+.view-card:hover {
+    transform: translateY(-3px);
+}
+
+.view-card.Left {
+    border-left-color: var(--left-color);
+}
+
+.view-card.Right {
+    border-left-color: var(--right-color);
+}
+
+.view-card.Center {
+    border-left-color: var(--center-color);
+}
+
+/* ===== STATUS BAR ===== */
+.status-card {
+    transition: opacity 0.3s;
+}
+
+/* ===== RECOMMENDED SEARCHES ===== */
+.recommended-search-item {
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.recommended-search-item:hover {
+    background-color: #e9ecef;
+}
+
+body.dark-mode .recommended-search-item {
+    background-color: #343a40;
+}
+
+body.dark-mode .recommended-search-item:hover {
+    background-color: #495057;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+}
+.footer {
+  /*position: fixed;*/
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /*background-color: red;*/
+  /*color: white;*/
+  text-align: center;
+}
+
+body.dark-mode footer {
+    background-color: var(--primary-dark);
+}
+
+.flex-1 {
+    background-color: var(--primary-color);
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 767.98px) {
+    .landing-page {
+        padding: 3rem 0;
+    }
+
+    .labels-container {
+        flex-direction: column;
+    }
+
+    .sentiment-label, .bias-label {
+        margin-bottom: 0.5rem;
+    }
+}
