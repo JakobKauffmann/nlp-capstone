@@ -1,0 +1,93 @@
+/* Import Tailwind base styles (optional, if not using CDN's base) */
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+
+/* --- Custom Styles & Overrides --- */
+
+/* Apply base background and text colors */
+body {
+    @apply bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    @apply bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700;
+    /* Initial state for mobile: hidden off-screen */
+    @apply fixed inset-y-0 left-0 z-30 w-64;
+    @apply transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0; /* Mobile hidden, Desktop static */
+}
+/* Add class via JS to show on mobile: .translate-x-0 */
+
+/* Header Styles */
+header {
+     @apply bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700;
+}
+
+/* Card Styles */
+.result-card,
+.bg-white.rounded-xl, /* For input/loading/error cards */
+.analysis-content > div { /* Style containers within tabs */
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+}
+
+/* Input Type Buttons - Base Style */
+.input-type-btn {
+    @apply bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-150;
+}
+/* Input Type Buttons - Active State */
+.input-type-btn[aria-selected="true"] {
+    @apply bg-blue-600 text-white dark:bg-blue-500 dark:text-white;
+}
+
+/* Analysis Tabs - Base Style */
+.analysis-tab {
+     @apply border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:border-gray-500 transition-colors duration-150;
+}
+/* Analysis Tabs - Active State */
+.analysis-tab[aria-current="page"] {
+     @apply border-blue-500 text-blue-600 dark:border-blue-400 dark:text-blue-400;
+}
+
+
+/* Pulse Animation */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.95; }
+}
+
+/* Ensure Plotly containers have dimensions */
+#sentimentChartContainer, #biasChartContainer {
+    min-height: 300px; /* Ensure minimum height */
+}
+
+
+/* History Item Hover */
+.history-item:hover .group-hover\:text-blue-600 {
+    color: #2563eb; /* Tailwind blue-600 */
+}
+.dark .history-item:hover .dark\:group-hover\:text-blue-400 {
+     color: #60a5fa; /* Tailwind blue-400 */
+}
+
+/* Responsive Sidebar Toggle */
+@media (min-width: 1024px) { /* lg breakpoint */
+    #sidebarToggle {
+        display: none; /* Hide toggle on large screens */
+    }
+}
+
+/* Ensure long summaries wrap correctly */
+#contentSummary {
+     word-break: break-word; /* Break long words if necessary */
+     overflow-wrap: break-word; /* Preferred way to break words */
+}
+
+/* Style for recommended search tags */
+#recommendedSearches span {
+     display: inline-block; /* Ensure proper spacing and wrapping */
+}
