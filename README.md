@@ -135,6 +135,4 @@ nlp-capstone/
 ## Notes
 
 * The Hugging Face Inference API free tier may have rate limits or require models to "wake up" (causing initial delays or 503 errors). The application includes basic retry logic for this.
-* Ensure you have placed the necessary image assets (`light-logo.svg`, `dark-logo.svg`, `favicon.ico`) in the `static/images/` directory.
-* Update the screenshot path in the "Screenshot" section with your actual file.
 
