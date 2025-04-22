@@ -27,9 +27,8 @@ The application outputs the following for the analyzed text:
 * **Visualizations**: Displays interactive charts showing sentiment and bias distribution (more relevant for topic analysis).
 * **History**: Saves recent analyses for easy review and reloading.
 
-## Screenshot
+## Screenshots
 
-*(Replace the path below with the actual path to your UI screenshot)*
 ![UI Screenshot](docs/screenshot.png)
 
 ## Models Used
