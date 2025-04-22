@@ -30,6 +30,7 @@ The application outputs the following for the analyzed text:
 ## Screenshots
 
 ![UI Screenshot](docs/screenshot.png)
+![UI Screenshot](docs/result_sample.png)
 
 ## Models Used
 
