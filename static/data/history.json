@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": 1745276683899,
+    "date": "2025-04-21 16:04:43",
+    "input_type": "topic",
+    "input_value": "climate change",
+    "results": {
+      "bias": "Left",
+      "sentiment": "Positive",
+      "bias_value": 86,
+      "sentiment_value": 99
+    }
+  },
+  {
+    "id": 1745276662226,
+    "date": "2025-04-21 16:04:22",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
+    "results": {
+      "bias": "Center",
+      "sentiment": "Positive",
+      "bias_value": 44,
+      "sentiment_value": 98
+    }
+  },
+  {
+    "id": 1745276606344,
+    "date": "2025-04-21 16:03:26",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
+    "results": {
+      "bias": "Center",
+      "sentiment": "Positive",
+      "bias_value": 44,
+      "sentiment_value": 98
+    }
+  },
+  {
+    "id": 1745276375660,
+    "date": "2025-04-21 15:59:35",
+    "input_type": "topic",
+    "input_value": "climate change",
+    "results": {
+      "bias": "Left",
+      "sentiment": "Positive",
+      "bias_value": 86,
+      "sentiment_value": 99
+    }
+  },
+  {
+    "id": 1745276162022,
+    "date": "2025-04-21 15:56:02",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
+    "results": {
+      "bias": "Center",
+      "sentiment": "Positive",
+      "bias_value": 44,
+      "sentiment_value": 98
+    }
+  },
+  {
+    "id": 1745275892159,
+    "date": "2025-04-21 15:51:32",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
+    "results": {
+      "bias": "Center",
+      "sentiment": "Positive",
+      "bias_value": 44,
+      "sentiment_value": 98
+    }
+  },
+  {
+    "id": 1745274948600,
+    "date": "2025-04-21 15:35:48",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
+    "results": {
+      "bias": "Error",
+      "sentiment": "Error",
+      "bias_value": 0,
+      "sentiment_value": 0
+    }
+  }
+]

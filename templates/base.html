@@ -1,214 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AI Political Bias & Sentiment Analyzer{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% block extra_css %}{% endblock %}
-</head>
-<body class="font-sans"> <div class="flex h-screen overflow-hidden">
-        <div class="sidebar w-64 border-r flex flex-col transition-transform duration-300 ease-in-out transform">
-            <div class="p-4 border-b flex items-center justify-center h-16">
-                <img src="{{ url_for('static', filename='images/light-logo.svg') }}" alt="Logo" class="h-10 block dark:hidden light-logo">
-                <img src="{{ url_for('static', filename='images/dark-logo.svg') }}" alt="Logo" class="h-10 hidden dark:block dark-logo">
-            </div>
-            <div class="flex-1 overflow-y-auto p-4">
-                <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">History</h3>
-                <ul id="historyList" class="space-y-1">
-                    {% if history %}
-                        {% for item in history %}
-                            <li>
-                                <a href="#" class="history-item group flex flex-col px-2 py-2 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                                   data-history-id="{{ item.id }}"
-                                   data-input-type="{{ item.input_type }}"
-                                   data-input-value="{{ item.input_value }}"
-                                   onclick="loadHistoryItem(this); return false;">
-                                    <div class="flex items-center">
-                                        <i class="fas {% if item.input_type == 'url' %}fa-link{% elif item.input_type == 'text' %}fa-align-left{% else %}fa-search{% endif %} mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"></i>
-                                        <span class="truncate max-w-[180px] text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ item.input_value }}</span>
-                                    </div>
-                                    <div class="ml-7 text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center space-x-2">
-                                        <span>{{ item.date.split(' ')[0] }}</span>
-                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
-                                            {% if item.results.bias == 'Left' %}bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                            {% elif item.results.bias == 'Right' %}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-                                            {% elif item.results.bias == 'Center' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-                                            {% else %}bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200{% endif %}">
-                                            {{ item.results.bias }}
-                                        </span>
-                                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
-                                            {% if item.results.sentiment == 'Positive' %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                                            {% elif item.results.sentiment == 'Negative' %}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
-                                            {% elif item.results.sentiment == 'Neutral' %}bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200
-                                            {% else %}bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200{% endif %}">
-                                            {{ item.results.sentiment }}
-                                        </span>
-                                    </div>
-                                </a>
-                            </li>
-                        {% endfor %}
-                    {% else %}
-                        <li class="text-sm text-gray-500 dark:text-gray-400 px-2 py-2">No history yet</li>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-                <button id="themeToggleButton" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
-                    <i class="fas fa-moon mr-2"></i> <span>Toggle Theme</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <header class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <div class="flex items-center justify-between px-4 py-3">
-                    <div class="flex items-center">
-                        <button id="sidebarToggle" class="mr-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none lg:hidden"> <i class="fas fa-bars text-xl"></i>
-                        </button>
-                        <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Political Bias Analyzer</h1>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                         <a href="https://github.com/your-repo-link" target="_blank" rel="noopener noreferrer" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200" title="GitHub Repository">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <button class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200" title="Help">
-                            <i class="fas fa-question-circle"></i>
-                        </button>
-                    </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            {% block title %}AI Political Bias & Sentiment Analyzer{% endblock
+            %}
+        </title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link
+            rel="icon"
+            href="{{ url_for('static', filename='images/favicon.ico') }}"
+            type="image/x-icon"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/style.css') }}"
+        />
+        {% block extra_css %}{% endblock %}
+        <script>
+            // Apply theme class immediately to avoid FOUC
+            (function () {
+                const theme =
+                    localStorage.getItem("theme") ||
+                    (window.matchMedia("(prefers-color-scheme: dark)").matches
+                        ? "dark"
+                        : "light");
+                if (theme === "dark") {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
+            })();
+        </script>
+    </head>
+    <body
+        class="font-sans bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+    >
+        <div class="flex h-screen">
+            <div
+                class="sidebar w-64 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex-shrink-0 flex flex-col transition-transform duration-300 ease-in-out transform lg:translate-x-0 -translate-x-full lg:static fixed inset-y-0 left-0 z-30"
+            >
+                <div
+                    class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-center h-16 flex-shrink-0"
+                >
+                    <img
+                        src="{{ url_for('static', filename='images/light-logo.svg') }}"
+                        alt="Logo"
+                        class="h-10 block dark:hidden light-logo"
+                    />
+                    <img
+                        src="{{ url_for('static', filename='images/dark-logo.svg') }}"
+                        alt="Logo"
+                        class="h-10 hidden dark:block dark-logo"
+                    />
                 </div>
-            </header>
+                <div class="flex-1 overflow-y-auto p-4">
+                    <h3
+                        class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2"
+                    >
+                        History
+                    </h3>
+                    <ul id="historyList" class="space-y-1">
+                        {% if history %} {% for item in history %}
+                        <li>
+                            <a
+                                href="#"
+                                class="history-item group flex flex-col px-2 py-2 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                data-history-id="{{ item.id }}"
+                                data-input-type="{{ item.input_type }}"
+                                data-input-value="{{ item.input_value }}"
+                                onclick="loadHistoryItem(this); return false;"
+                            >
+                                <div class="flex items-center">
+                                    <i
+                                        class="fas {% if item.input_type == 'url' %}fa-link{% elif item.input_type == 'text' %}fa-align-left{% else %}fa-search{% endif %} mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"
+                                    ></i>
+                                    <span
+                                        class="truncate max-w-[180px] text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                                        >{{ item.input_value }}</span
+                                    >
+                                </div>
+                                <div
+                                    class="ml-7 text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center space-x-2"
+                                >
+                                    <span>{{ item.date.split(' ')[0] }}</span>
+                                    <span
+                                        class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium {% if item.results.bias == 'Left' %}bg-blue-100 text-blue-800{% elif item.results.bias == 'Right' %}bg-red-100 text-red-800{% elif item.results.bias == 'Center' %}bg-yellow-100 text-yellow-800{% else %}bg-gray-100 text-gray-800{% endif %}"
+                                    >
+                                        {{ item.results.bias }}
+                                    </span>
+                                    <span
+                                        class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium {% if item.results.sentiment == 'Positive' %}bg-green-100 text-green-800{% elif item.results.sentiment == 'Negative' %}bg-red-100 text-red-800{% elif item.results.sentiment == 'Neutral' %}bg-gray-100 text-gray-800{% else %}bg-gray-100 text-gray-800{% endif %}"
+                                    >
+                                        {{ item.results.sentiment }}
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %} {% else %}
+                        <li
+                            class="text-sm text-gray-500 dark:text-gray-400 px-2 py-2"
+                        >
+                            No history yet
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div
+                    class="p-4 border-t border-gray-200 dark:border-gray-700 flex-shrink-0"
+                >
+                    <button
+                        id="themeToggleButton"
+                        class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-150 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200"
+                    >
+                        <i class="fas fa-moon mr-2"></i>
+                        <span>Toggle Theme</span>
+                    </button>
+                </div>
+            </div>
+            <div
+                class="flex-1 flex flex-col overflow-hidden"
+                style="min-width: 0"
+            >
+                <header
+                    class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex-shrink-0"
+                >
+                    <div class="flex items-center justify-between px-4 py-3">
+                        <div class="flex items-center">
+                            <button
+                                id="sidebarToggle"
+                                class="mr-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none lg:hidden"
+                            >
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+                            <h1
+                                class="text-xl font-semibold text-gray-800 dark:text-gray-100"
+                            >
+                                Political Bias Analyzer
+                            </h1>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <a
+                                href="https://github.com/your-repo-link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                                title="GitHub Repository"
+                            >
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <button
+                                class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                                title="Help"
+                            >
+                                <i class="fas fa-question-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </header>
 
-            <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 lg:p-6 bg-gray-100 dark:bg-gray-900">
-                {% block content %}{% endblock %}
-            </main>
+                <main
+                    class="flex-1 overflow-x-hidden overflow-y-auto p-4 lg:p-6 bg-gray-100 dark:bg-gray-900"
+                >
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
         </div>
-    </div>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <script>
+            // --- Theme Handling ---
+            const themeToggleButton =
+                document.getElementById("themeToggleButton");
+            const htmlEl = document.documentElement; // Target the <html> element
 
-    <script>
-        // --- Theme Handling ---
-        const themeToggleButton = document.getElementById('themeToggleButton');
-        const applyTheme = (theme) => {
-            const htmlEl = document.documentElement;
-            if (theme === 'dark') {
-                htmlEl.classList.add('dark');
-                themeToggleButton.innerHTML = '<i class="fas fa-sun mr-2"></i> <span>Light Mode</span>';
+            const applyTheme = (theme) => {
+                if (theme === "dark") {
+                    htmlEl.classList.add("dark");
+                    themeToggleButton.innerHTML =
+                        '<i class="fas fa-sun mr-2"></i> <span>Light Mode</span>';
+                } else {
+                    htmlEl.classList.remove("dark");
+                    themeToggleButton.innerHTML =
+                        '<i class="fas fa-moon mr-2"></i> <span>Dark Mode</span>';
+                }
+                // Update Plotly chart layouts if function exists
+                if (typeof window.updatePlotlyLayoutTheme === "function") {
+                    window.updatePlotlyLayoutTheme();
+                }
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = htmlEl.classList.contains("dark")
+                    ? "dark"
+                    : "light";
+                const newTheme = currentTheme === "dark" ? "light" : "dark";
+                localStorage.setItem("theme", newTheme); // Store preference
+                applyTheme(newTheme);
+            };
+
+            themeToggleButton.addEventListener("click", toggleTheme);
+
+            // Apply initial theme based on localStorage or system preference
+            // Moved immediate application to <head> to prevent FOUC
+            // applyTheme(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+            // Listen for system theme changes only if no theme is stored in localStorage
+            window
+                .matchMedia("(prefers-color-scheme: dark)")
+                .addEventListener("change", (e) => {
+                    if (!localStorage.getItem("theme")) {
+                        applyTheme(e.matches ? "dark" : "light");
+                    }
+                });
+
+            // --- Sidebar Handling ---
+            const sidebar = document.querySelector(".sidebar");
+            const sidebarToggle = document.getElementById("sidebarToggle");
+            if (sidebar && sidebarToggle) {
+                sidebarToggle.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    sidebar.classList.toggle("-translate-x-full");
+                    sidebar.classList.toggle("translate-x-0");
+                });
+                document.addEventListener("click", (event) => {
+                    const isClickInsideSidebar = sidebar.contains(event.target);
+                    const isClickOnToggle = sidebarToggle.contains(
+                        event.target,
+                    );
+                    if (
+                        !isClickInsideSidebar &&
+                        !isClickOnToggle &&
+                        sidebar.classList.contains("translate-x-0") &&
+                        window.innerWidth < 1024
+                    ) {
+                        sidebar.classList.add("-translate-x-full");
+                        sidebar.classList.remove("translate-x-0");
+                    }
+                });
             } else {
-                htmlEl.classList.remove('dark');
-                themeToggleButton.innerHTML = '<i class="fas fa-moon mr-2"></i> <span>Dark Mode</span>';
+                console.error("Sidebar or Sidebar Toggle button not found.");
             }
-            // Update Plotly chart layouts if they exist and function is defined
-            if (typeof window.updatePlotlyLayoutTheme === 'function') {
-                 window.updatePlotlyLayoutTheme();
-            }
-        };
-        const toggleTheme = () => {
-            const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        };
-        themeToggleButton.addEventListener('click', toggleTheme);
-        // Apply theme on initial load
-        applyTheme(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-        // Listen for system theme changes only if no theme is stored
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) { applyTheme(e.matches ? 'dark' : 'light'); }
-        });
 
-        // --- Sidebar Handling ---
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        if (sidebar && sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                // Toggle class for sliding sidebar in/out on mobile/tablet
-                sidebar.classList.toggle('-translate-x-full');
-                sidebar.classList.toggle('translate-x-0'); // Ensure it becomes visible
-            });
-            // Close sidebar when clicking outside on mobile/tablet
-            document.addEventListener('click', (event) => {
-                const isClickInsideSidebar = sidebar.contains(event.target);
-                const isClickOnToggle = sidebarToggle.contains(event.target);
-                // Check if sidebar is currently shown (not having -translate-x-full) and screen is small
-                if (!isClickInsideSidebar && !isClickOnToggle && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
-                    sidebar.classList.add('-translate-x-full');
-                    sidebar.classList.remove('translate-x-0');
+            // --- Global History Item Loader ---
+            // Ensure this function exists globally if called by onclick
+            function loadHistoryItem(element) {
+                const inputType = element.getAttribute("data-input-type");
+                const inputValue = element.getAttribute("data-input-value");
+                // ... rest of the function (ensure elements are selected correctly) ...
+
+                console.log(
+                    `Loading history: Type=${inputType}, Value=${inputValue ? inputValue.substring(0, 30) : "N/A"}...`,
+                );
+
+                const landingPage = document.getElementById("landingPage");
+                const analysisPage = document.getElementById("analysisPage");
+                const contentInput = document.getElementById("contentInput");
+                const analyzeButton = document.getElementById("analyzeButton");
+                const inputTypeBtns =
+                    document.querySelectorAll(".input-type-btn");
+
+                if (
+                    !analysisPage ||
+                    !contentInput ||
+                    !analyzeButton ||
+                    !inputTypeBtns
+                ) {
+                    console.error(
+                        "Analysis page elements not found. Cannot load history item.",
+                    );
+                    alert(
+                        "Error: Could not find necessary elements to load history.",
+                    );
+                    return;
                 }
-            });
-        } else {
-             console.error("Sidebar or Sidebar Toggle button not found.");
-        }
 
-
-         // --- Global History Item Loader ---
-         // Declared globally so it can be called via onclick attribute in index.html
-         // Ensure elements exist before manipulating them
-        function loadHistoryItem(element) {
-            const inputType = element.getAttribute('data-input-type');
-            const inputValue = element.getAttribute('data-input-value');
-            const historyId = element.getAttribute('data-history-id');
-
-            console.log(`Loading history: Type=${inputType}, Value=${inputValue ? inputValue.substring(0,30) : 'N/A'}...`);
-
-            const landingPage = document.getElementById('landingPage');
-            const analysisPage = document.getElementById('analysisPage');
-            const contentInput = document.getElementById('contentInput');
-            const charCount = document.getElementById('charCount');
-            const analyzeButton = document.getElementById('analyzeButton');
-            const inputTypeBtns = document.querySelectorAll('.input-type-btn');
-
-            if (!analysisPage || !contentInput || !analyzeButton || !inputTypeBtns) {
-                console.error("Analysis page elements not found. Cannot load history item.");
-                alert("Error: Could not find necessary elements to load history."); // User feedback
-                return;
-            }
-
-            // Switch to analysis page if needed
-            if (landingPage && !landingPage.classList.contains('hidden')) {
-                landingPage.classList.add('hidden');
-                analysisPage.classList.remove('hidden');
-            }
-
-            // Select the correct input type button
-            let foundBtn = false;
-            inputTypeBtns.forEach(btn => {
-                if (btn.getAttribute('data-input-type') === inputType) {
-                    btn.click(); // Trigger associated logic (placeholder update, etc.)
-                    foundBtn = true;
+                if (landingPage && !landingPage.classList.contains("hidden")) {
+                    landingPage.classList.add("hidden");
+                    analysisPage.classList.remove("hidden");
                 }
-            });
-            if (!foundBtn) console.warn(`Input type button for '${inputType}' not found.`);
 
-            // Fill input value and update counter
-            contentInput.value = inputValue || ''; // Handle null/undefined value
-            if (typeof window.updateCharCounter === 'function') { // Check if counter function exists
-                 window.updateCharCounter();
-            } else if (charCount) { // Manual update as fallback
-                 charCount.textContent = contentInput.value.length;
+                let foundBtn = false;
+                inputTypeBtns.forEach((btn) => {
+                    if (btn.getAttribute("data-input-type") === inputType) {
+                        btn.click();
+                        foundBtn = true;
+                    }
+                });
+                if (!foundBtn)
+                    console.warn(
+                        `Input type button for '${inputType}' not found.`,
+                    );
+
+                contentInput.value = inputValue || "";
+                // Ensure the char counter update function exists globally or call it directly
+                if (typeof window.updateCharCounter === "function") {
+                    window.updateCharCounter();
+                } else if (document.getElementById("charCount")) {
+                    document.getElementById("charCount").textContent =
+                        contentInput.value.length;
+                }
+
+                analysisPage.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+                setTimeout(() => {
+                    analyzeButton.click();
+                }, 150);
+
+                if (
+                    window.innerWidth < 1024 &&
+                    sidebar &&
+                    sidebar.classList.contains("translate-x-0")
+                ) {
+                    sidebar.classList.add("-translate-x-full");
+                    sidebar.classList.remove("translate-x-0");
+                }
             }
-
-
-            // Scroll to analysis section and trigger analysis
-            analysisPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Add a slight delay before clicking analyze to ensure UI updates (like button state)
-            setTimeout(() => {
-                analyzeButton.click();
-            }, 150); // Increased delay slightly
-
-
-            // Close sidebar on mobile after selection
-            if (window.innerWidth < 1024 && sidebar && !sidebar.classList.contains('-translate-x-full')) {
-                 sidebar.classList.add('-translate-x-full');
-                 sidebar.classList.remove('translate-x-0');
-            }
-        }
-
-    </script>
-    {% block extra_js %}{% endblock %}
-</body>
+        </script>
+        {% block extra_js %}{% endblock %}
+    </body>
 </html>
