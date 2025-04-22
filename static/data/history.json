@@ -1,5 +1,29 @@
 [
   {
+    "id": 1745352038632,
+    "date": "2025-04-22 13:00:38",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/09/business/reciprocal-tariff-pause-trump/index.html",
+    "results": {
+      "bias": "Right",
+      "sentiment": "Positive",
+      "bias_value": 81,
+      "sentiment_value": 73
+    }
+  },
+  {
+    "id": 1745351885254,
+    "date": "2025-04-22 12:58:05",
+    "input_type": "url",
+    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
+    "results": {
+      "bias": "Error",
+      "sentiment": "Error",
+      "bias_value": 0,
+      "sentiment_value": 0
+    }
+  },
+  {
     "id": 1745276683899,
     "date": "2025-04-21 16:04:43",
     "input_type": "topic",
