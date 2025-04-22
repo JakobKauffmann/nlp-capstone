@@ -108,7 +108,7 @@ This application utilizes a hybrid approach, combining specialized models hosted
 
 ## Project Structure
 
-
+```
 nlp-capstone/
 ├── app.py                  # Main Flask application logic
 ├── web_scraper/
@@ -130,7 +130,7 @@ nlp-capstone/
 ├── .env                    # Stores API keys (Needs to be created manually)
 ├── .gitignore              # Specifies intentionally untracked files (add .env here)
 └── README.md               # This file
-
+```
 
 ## Notes
 
