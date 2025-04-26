@@ -108,7 +108,7 @@ This application utilizes a hybrid approach, combining specialized models hosted
 
 ## Project Structure
 
-
+```plaintext
 nlp-capstone/
 ├── app.py                 # Main Flask application (backend logic)
 ├── web_scraper/
@@ -133,7 +133,7 @@ nlp-capstone/
 ├── .env                    # API keys (you must create manually)
 ├── .gitignore              # Files to ignore in Git (e.g., .env, __pycache__)
 └── README.md               # Project overview and instructions
-
+```
 
 
 ## Notes
