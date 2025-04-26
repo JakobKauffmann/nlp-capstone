@@ -23,7 +23,7 @@
         />
         {% block extra_css %}{% endblock %}
         <script>
-            // Apply theme class immediately to avoid FOUC
+            // Apply theme class immediately
             (function () {
                 const theme =
                     localStorage.getItem("theme") ||
@@ -36,22 +36,18 @@
                     document.documentElement.classList.remove("dark");
                 }
             })();
-
-            // Define globally needed functions BEFORE they might be called by inline handlers
+            // Define globally needed functions
             function updateCharCounter() {
                 const contentInput = document.getElementById("contentInput");
                 const charCount = document.getElementById("charCount");
                 const analyzeButton = document.getElementById("analyzeButton");
-                const MAX_CHARS = 8000; // Make sure this matches JS state if defined elsewhere
-
-                if (!contentInput || !charCount || !analyzeButton) return; // Exit if elements not found
-
+                const MAX_CHARS = 8000;
+                if (!contentInput || !charCount || !analyzeButton) return;
                 const currentLength = contentInput.value.length;
                 charCount.textContent = currentLength;
                 const isOverLimit = currentLength > MAX_CHARS;
-
-                analyzeButton.disabled = isOverLimit; // Disable if over limit
-                charCount.classList.toggle("text-red-500", isOverLimit); // Use Tailwind class for color
+                analyzeButton.disabled = isOverLimit;
+                charCount.classList.toggle("text-red-500", isOverLimit);
                 charCount.classList.toggle("font-bold", isOverLimit);
             }
         </script>
@@ -59,7 +55,8 @@
     <body class="font-sans">
         <div class="flex h-screen">
             <div
-                class="sidebar fixed inset-y-0 left-0 z-30 w-64 border-r flex-shrink-0 flex flex-col transform -translate-x-full lg:translate-x-0 lg:static"
+                id="sidebar"
+                class="sidebar fixed inset-y-0 left-0 z-30 w-64 border-r flex-shrink-0 flex flex-col transform -translate-x-full lg:translate-x-0 lg:static overflow-hidden"
             >
                 <div
                     class="p-4 border-b flex items-center justify-center h-16 flex-shrink-0"
@@ -76,17 +73,29 @@
                     />
                 </div>
                 <div class="flex-1 overflow-y-auto p-4">
-                    <h3
-                        class="text-xs font-semibold uppercase tracking-wider mb-2 text-gray-500 dark:text-gray-400"
-                    >
-                        History
-                    </h3>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3
+                            class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                        >
+                            History
+                        </h3>
+                        <button
+                            id="clearHistoryBtn"
+                            title="Clear all history"
+                            class="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors duration-150 {% if not history %}hidden{% endif %}"
+                        >
+                            Clear All
+                        </button>
+                    </div>
                     <ul id="historyList" class="space-y-1">
                         {% if history %} {% for item in history %}
-                        <li>
+                        <li
+                            class="history-list-item flex items-center justify-between group rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                            data-item-id="{{ item.id }}"
+                        >
                             <a
                                 href="#"
-                                class="history-item group flex flex-col px-2 py-2 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                class="history-item flex-grow flex flex-col px-2 py-2 text-sm font-medium"
                                 data-history-id="{{ item.id }}"
                                 data-input-type="{{ item.input_type }}"
                                 data-input-value="{{ item.input_value }}"
@@ -94,10 +103,10 @@
                             >
                                 <div class="flex items-center">
                                     <i
-                                        class="fas {% if item.input_type == 'url' %}fa-link{% elif item.input_type == 'text' %}fa-align-left{% else %}fa-search{% endif %} mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"
+                                        class="fas {% if item.input_type == 'url' %}fa-link{% elif item.input_type == 'text' %}fa-align-left{% else %}fa-search{% endif %} mr-3 w-4 text-center text-gray-400 dark:text-gray-500"
                                     ></i>
                                     <span
-                                        class="truncate max-w-[180px] group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                                        class="truncate max-w-[150px] group-hover:text-indigo-600 dark:group-hover:text-indigo-400"
                                     >
                                         {{ item.input_value }}
                                     </span>
@@ -110,20 +119,28 @@
                                         >{{ item.date.split(' ')[0] }}</span
                                     >
                                     <span
-                                        class="badge badge-blue inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"
+                                        class="badge {% if item.results.bias == 'Left' %}badge-blue{% elif item.results.bias == 'Right' %}badge-red{% elif item.results.bias == 'Center' %}badge-yellow{% else %}badge-gray{% endif %} inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium"
                                     >
                                         {{ item.results.bias }}
                                     </span>
                                     <span
-                                        class="badge badge-green inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                                        class="badge {% if item.results.sentiment == 'Positive' %}badge-green{% elif item.results.sentiment == 'Negative' %}badge-red{% else %}badge-gray{% endif %} inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium"
                                     >
                                         {{ item.results.sentiment }}
                                     </span>
                                 </div>
                             </a>
+                            <button
+                                class="delete-history-item p-2 mr-1 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex-shrink-0"
+                                title="Delete item"
+                                data-id="{{ item.id }}"
+                            >
+                                <i class="fas fa-times fa-xs"></i>
+                            </button>
                         </li>
                         {% endfor %} {% else %}
                         <li
+                            id="noHistoryMessage"
                             class="text-sm px-2 py-2 text-gray-500 dark:text-gray-400"
                         >
                             No history yet
@@ -131,7 +148,7 @@
                         {% endif %}
                     </ul>
                 </div>
-                <div class="p-4 border-t flex-shrink-0">
+                <!-- <div class="p-4 border-t flex-shrink-0">
                     <button
                         id="themeToggleButton"
                         class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-150"
@@ -139,7 +156,7 @@
                         <i class="fas fa-moon mr-2"></i>
                         <span>Toggle Theme</span>
                     </button>
-                </div>
+                </div> -->
             </div>
             <div
                 class="flex-1 flex flex-col overflow-hidden"
@@ -160,7 +177,7 @@
                         </div>
                         <div class="flex items-center space-x-4">
                             <a
-                                href="https://github.com/Shourya200327/nlp-capstone"
+                                href="https://github.com/JakobKauffmann/nlp-capstone"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
@@ -192,66 +209,52 @@
             const themeToggleButton =
                 document.getElementById("themeToggleButton");
             const htmlEl = document.documentElement;
-
             const applyTheme = (theme) => {
+                /* ... (same as base_html_v6) ... */
                 const isDark = theme === "dark";
                 htmlEl.classList.toggle("dark", isDark);
-                // Update button text/icon based on the *newly applied* theme
-                themeToggleButton.innerHTML = isDark
-                    ? '<i class="fas fa-sun mr-2"></i> <span>Light Mode</span>'
-                    : '<i class="fas fa-moon mr-2"></i> <span>Dark Mode</span>';
-                // Update button colors based on theme using CSS variables (applied via classes)
-                themeToggleButton.classList.toggle("bg-gray-200", !isDark);
-                themeToggleButton.classList.toggle(
-                    "hover:bg-gray-300",
-                    !isDark,
-                );
-                themeToggleButton.classList.toggle("dark:bg-gray-700", isDark);
-                themeToggleButton.classList.toggle(
-                    "dark:hover:bg-gray-600",
-                    isDark,
-                );
-                themeToggleButton.classList.toggle("text-gray-700", !isDark);
-                themeToggleButton.classList.toggle(
-                    "dark:text-gray-200",
-                    isDark,
-                );
-
+                if (themeToggleButton) {
+                    themeToggleButton.innerHTML = isDark
+                        ? '<i class="fas fa-sun mr-2"></i> <span>Light Mode</span>'
+                        : '<i class="fas fa-moon mr-2"></i> <span>Dark Mode</span>';
+                    themeToggleButton.style.backgroundColor = getComputedStyle(
+                        document.documentElement,
+                    ).getPropertyValue("--button-secondary-bg");
+                    themeToggleButton.style.color = getComputedStyle(
+                        document.documentElement,
+                    ).getPropertyValue("--button-secondary-text");
+                }
                 if (typeof window.updatePlotlyLayoutTheme === "function") {
                     window.updatePlotlyLayoutTheme();
                 }
             };
-
             const toggleTheme = () => {
-                const currentTheme = htmlEl.classList.contains("dark")
-                    ? "dark"
-                    : "light";
-                const newTheme = currentTheme === "dark" ? "light" : "dark";
+                /* ... (same as base_html_v6) ... */
+                const newTheme = htmlEl.classList.contains("dark")
+                    ? "light"
+                    : "dark";
                 localStorage.setItem("theme", newTheme);
                 applyTheme(newTheme);
             };
-
-            themeToggleButton.addEventListener("click", toggleTheme);
-
-            // Apply initial theme (already handled by script in <head>)
-
-            // Listen for system theme changes only if no theme is stored
+            if (themeToggleButton)
+                themeToggleButton.addEventListener("click", toggleTheme);
             window
                 .matchMedia("(prefers-color-scheme: dark)")
                 .addEventListener("change", (e) => {
+                    /* ... (same as base_html_v6) ... */
                     if (!localStorage.getItem("theme")) {
                         applyTheme(e.matches ? "dark" : "light");
                     }
                 });
 
             // --- Sidebar Handling ---
-            const sidebar = document.querySelector(".sidebar");
+            const sidebar = document.getElementById("sidebar");
             const sidebarToggle = document.getElementById("sidebarToggle");
             if (sidebar && sidebarToggle) {
+                /* ... (same as base_html_v6) ... */
                 sidebarToggle.addEventListener("click", (event) => {
                     event.stopPropagation();
                     sidebar.classList.toggle("-translate-x-full");
-                    sidebar.classList.toggle("translate-x-0");
                 });
                 document.addEventListener("click", (event) => {
                     const isClickInsideSidebar = sidebar.contains(event.target);
@@ -261,11 +264,10 @@
                     if (
                         !isClickInsideSidebar &&
                         !isClickOnToggle &&
-                        sidebar.classList.contains("translate-x-0") &&
+                        !sidebar.classList.contains("-translate-x-full") &&
                         window.innerWidth < 1024
                     ) {
                         sidebar.classList.add("-translate-x-full");
-                        sidebar.classList.remove("translate-x-0");
                     }
                 });
             } else {
@@ -274,56 +276,46 @@
 
             // --- Global History Item Loader ---
             function loadHistoryItem(element) {
-                // Check if elements exist first
+                /* ... (same as base_html_v6) ... */
+                const inputType = element.getAttribute("data-input-type");
+                const inputValue = element.getAttribute("data-input-value");
                 const landingPage = document.getElementById("landingPage");
                 const analysisPage = document.getElementById("analysisPage");
                 const contentInput = document.getElementById("contentInput");
                 const analyzeButton = document.getElementById("analyzeButton");
                 const inputTypeBtns =
                     document.querySelectorAll(".input-type-btn");
-
                 if (
                     !analysisPage ||
                     !contentInput ||
                     !analyzeButton ||
                     !inputTypeBtns.length
                 ) {
-                    console.error(
-                        "Analysis page elements not found. Cannot load history item.",
-                    );
-                    alert(
-                        "Error: Could not find necessary elements to load history.",
-                    );
+                    console.error("Analysis page elements not found.");
+                    alert("Error: Could not find necessary elements.");
                     return;
                 }
-
-                const inputType = element.getAttribute("data-input-type");
-                const inputValue = element.getAttribute("data-input-value");
                 console.log(
                     `Loading history: Type=${inputType}, Value=${inputValue ? inputValue.substring(0, 30) : "N/A"}...`,
                 );
-
-                // Switch view if needed
                 if (landingPage && !landingPage.classList.contains("hidden")) {
                     landingPage.classList.add("hidden");
                     analysisPage.classList.remove("hidden");
                 }
-
-                // Activate correct input type button
                 let foundBtn = false;
                 inputTypeBtns.forEach((btn) => {
-                    if (btn.getAttribute("data-input-type") === inputType) {
-                        // Ensure only one button is active
-                        inputTypeBtns.forEach((b) =>
-                            b.setAttribute("aria-selected", "false"),
-                        );
-                        btn.setAttribute("aria-selected", "true"); // Manually set state
-                        // Update placeholder (assuming button click handler does this)
+                    const isActive =
+                        btn.getAttribute("data-input-type") === inputType;
+                    btn.setAttribute(
+                        "aria-selected",
+                        isActive ? "true" : "false",
+                    );
+                    if (isActive && contentInput) {
                         if (inputType === "url")
                             contentInput.placeholder =
                                 "Paste a news article URL (e.g., https://...)";
                         else if (inputType === "text")
-                            contentInput.placeholder = `Paste the article text (limit: 8000 characters)`; // Use actual limit
+                            contentInput.placeholder = `Paste the article text (limit: 8000 characters)`;
                         else
                             contentInput.placeholder =
                                 "Enter a topic to search and analyze (e.g., climate change)";
@@ -334,12 +326,9 @@
                     console.warn(
                         `Input type button for '${inputType}' not found.`,
                     );
-
-                // Set input value and update counter
                 contentInput.value = inputValue || "";
-                updateCharCounter(); // Call the globally defined function
-
-                // Scroll to analysis section and trigger analysis with delay
+                if (typeof window.updateCharCounter === "function")
+                    window.updateCharCounter();
                 analysisPage.scrollIntoView({
                     behavior: "smooth",
                     block: "start",
@@ -347,19 +336,194 @@
                 console.log("Scrolling and preparing to click Analyze...");
                 setTimeout(() => {
                     console.log("Clicking Analyze button for history item...");
-                    analyzeButton.click(); // Trigger analysis
-                }, 250); // Increased delay further
-
-                // Close sidebar on mobile
+                    analyzeButton.click();
+                }, 250);
                 if (
                     window.innerWidth < 1024 &&
                     sidebar &&
-                    sidebar.classList.contains("translate-x-0")
+                    !sidebar.classList.contains("-translate-x-full")
                 ) {
                     sidebar.classList.add("-translate-x-full");
-                    sidebar.classList.remove("translate-x-0");
                 }
             }
+
+            // --- NEW: History Deletion Logic ---
+            const historyList = document.getElementById("historyList");
+            const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+            const noHistoryMessage =
+                document.getElementById("noHistoryMessage"); // Get the 'no history' message element if it exists
+
+            // Function to show/hide the 'No history' message and 'Clear All' button
+            const updateHistoryVisibility = () => {
+                const items = historyList.querySelectorAll(
+                    "li.history-list-item",
+                ); // Select only actual items
+                const hasItems = items.length > 0;
+                if (noHistoryMessage) {
+                    noHistoryMessage.classList.toggle("hidden", hasItems);
+                }
+                if (clearHistoryBtn) {
+                    clearHistoryBtn.classList.toggle("hidden", !hasItems);
+                }
+            };
+
+            // Delete Single Item (using Event Delegation)
+            if (historyList) {
+                historyList.addEventListener("click", function (event) {
+                    // Find the closest delete button ancestor
+                    const deleteButton = event.target.closest(
+                        ".delete-history-item",
+                    );
+                    if (deleteButton) {
+                        event.preventDefault(); // Prevent default button action
+                        event.stopPropagation(); // Stop event from bubbling up (e.g., to the link)
+
+                        const itemId = deleteButton.getAttribute("data-id");
+                        const listItem = deleteButton.closest(
+                            "li.history-list-item",
+                        ); // Get the parent li
+
+                        if (!itemId || !listItem) {
+                            console.error(
+                                "Could not find item ID or list item for deletion.",
+                            );
+                            return;
+                        }
+
+                        // Optional: Add confirmation dialog
+                        if (
+                            !confirm(
+                                `Are you sure you want to delete this history item?`,
+                            )
+                        ) {
+                            return;
+                        }
+
+                        console.log(
+                            `Requesting deletion of history item ID: ${itemId}`,
+                        );
+                        fetch(`/history/delete/${itemId}`, { method: "DELETE" })
+                            .then((response) => {
+                                if (!response.ok) {
+                                    // Try to parse error, otherwise throw generic error
+                                    return response
+                                        .json()
+                                        .catch(() => {
+                                            throw new Error(
+                                                `HTTP error ${response.status}`,
+                                            );
+                                        })
+                                        .then((err) => {
+                                            throw new Error(
+                                                err.error ||
+                                                    `HTTP error ${response.status}`,
+                                            );
+                                        });
+                                }
+                                return response.json();
+                            })
+                            .then((data) => {
+                                if (data.success) {
+                                    console.log(
+                                        "Item deleted successfully from backend.",
+                                    );
+                                    // Remove the item from the UI
+                                    listItem.remove();
+                                    // Update visibility of 'No history' message / Clear button
+                                    updateHistoryVisibility();
+                                } else {
+                                    console.error(
+                                        "Failed to delete item:",
+                                        data.error,
+                                    );
+                                    alert(
+                                        `Error deleting history item: ${data.error || "Unknown error"}`,
+                                    );
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "Error deleting history item:",
+                                    error,
+                                );
+                                alert(
+                                    `Error deleting history item: ${error.message}`,
+                                );
+                            });
+                    }
+                });
+            }
+
+            // Clear All History
+            if (clearHistoryBtn) {
+                clearHistoryBtn.addEventListener("click", function () {
+                    // Optional: Add confirmation dialog
+                    if (
+                        !confirm(
+                            "Are you sure you want to clear the entire history? This cannot be undone.",
+                        )
+                    ) {
+                        return;
+                    }
+
+                    console.log("Requesting to clear all history...");
+                    fetch("/history/clear", { method: "DELETE" })
+                        .then((response) => {
+                            if (!response.ok) {
+                                return response
+                                    .json()
+                                    .catch(() => {
+                                        throw new Error(
+                                            `HTTP error ${response.status}`,
+                                        );
+                                    })
+                                    .then((err) => {
+                                        throw new Error(
+                                            err.error ||
+                                                `HTTP error ${response.status}`,
+                                        );
+                                    });
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                console.log(
+                                    "History cleared successfully from backend.",
+                                );
+                                // Remove all list items from the UI
+                                if (historyList) {
+                                    // Remove only items with the specific class, leave the 'no history' message if it's an li
+                                    historyList
+                                        .querySelectorAll(
+                                            "li.history-list-item",
+                                        )
+                                        .forEach((item) => item.remove());
+                                }
+                                // Update visibility of 'No history' message / Clear button
+                                updateHistoryVisibility();
+                            } else {
+                                console.error(
+                                    "Failed to clear history:",
+                                    data.error,
+                                );
+                                alert(
+                                    `Error clearing history: ${data.error || "Unknown error"}`,
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error clearing history:", error);
+                            alert(`Error clearing history: ${error.message}`);
+                        });
+                });
+            }
+
+            // Initial check for history visibility on page load
+            document.addEventListener(
+                "DOMContentLoaded",
+                updateHistoryVisibility,
+            );
         </script>
         {% block extra_js %}{% endblock %}
     </body>

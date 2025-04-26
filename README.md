@@ -27,10 +27,10 @@ The application outputs the following for the analyzed text:
 * **Visualizations**: Displays interactive charts showing sentiment and bias distribution (more relevant for topic analysis).
 * **History**: Saves recent analyses for easy review and reloading.
 
-## Screenshots
+## Screenshot
 
+*(Replace the path below with the actual path to your UI screenshot)*
 ![UI Screenshot](docs/screenshot.png)
-![UI Screenshot](docs/result_sample.png)
 
 ## Models Used
 
@@ -108,7 +108,7 @@ This application utilizes a hybrid approach, combining specialized models hosted
 
 ## Project Structure
 
-```
+
 nlp-capstone/
 ├── app.py                  # Main Flask application logic
 ├── web_scraper/
@@ -130,9 +130,11 @@ nlp-capstone/
 ├── .env                    # Stores API keys (Needs to be created manually)
 ├── .gitignore              # Specifies intentionally untracked files (add .env here)
 └── README.md               # This file
-```
+
 
 ## Notes
 
 * The Hugging Face Inference API free tier may have rate limits or require models to "wake up" (causing initial delays or 503 errors). The application includes basic retry logic for this.
+* Ensure you have placed the necessary image assets (`light-logo.svg`, `dark-logo.svg`, `favicon.ico`) in the `static/images/` directory.
+* Update the screenshot path in the "Screenshot" section with your actual file.
 

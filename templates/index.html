@@ -18,18 +18,18 @@ Analyzer{% endblock %} {% block content %}
             />
         </div>
         <h1
-            class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"
+            class="text-3xl md:text-4xl font-bold mb-4 text-slate-700 dark:text-white"
         >
             AI-Powered Political Bias & Sentiment Analyzer
         </h1>
-        <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
+        <p class="text-lg md:text-xl mb-8 text-slate-600 dark:text-white">
             Analyze political bias and sentiment in news articles, text, or
             topics using advanced AI. Get instant insights into political
             leaning, emotional tone, key findings, and more.
         </p>
         <button
             id="startAnalyzing"
-            class="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg pulse-animation"
+            class="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg pulse-animation"
         >
             Start Analyzing <i class="fas fa-arrow-right ml-2"></i>
         </button>
@@ -38,48 +38,48 @@ Analyzer{% endblock %} {% block content %}
         class="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl w-full px-4"
     >
         <div
-            class="analysis-page-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700"
+            class="analysis-page-card p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border"
         >
-            <div class="text-blue-500 dark:text-blue-400 mb-3">
+            <div class="mb-3 text-blue-500 dark:text-blue-400">
                 <i class="fas fa-link text-3xl"></i>
             </div>
             <h3
-                class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100"
+                class="text-lg font-semibold mb-2 text-slate-700 dark:text-white"
             >
                 URL Analysis
             </h3>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
+            <p class="text-sm text-slate-600 dark:text-gray-300">
                 Paste any news article URL for a comprehensive bias and
                 sentiment breakdown.
             </p>
         </div>
         <div
-            class="analysis-page-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700"
+            class="analysis-page-card p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border"
         >
-            <div class="text-green-500 dark:text-green-400 mb-3">
+            <div class="mb-3 text-green-500 dark:text-green-400">
                 <i class="fas fa-align-left text-3xl"></i>
             </div>
             <h3
-                class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100"
+                class="text-lg font-semibold mb-2 text-slate-700 dark:text-white"
             >
                 Text Analysis
             </h3>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
+            <p class="text-sm text-slate-600 dark:text-gray-300">
                 Analyze direct text input for political sentiment and leanings.
             </p>
         </div>
         <div
-            class="analysis-page-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700"
+            class="analysis-page-card p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border"
         >
-            <div class="text-purple-500 dark:text-purple-400 mb-3">
+            <div class="mb-3 text-purple-500 dark:text-purple-400">
                 <i class="fas fa-search text-3xl"></i>
             </div>
             <h3
-                class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100"
+                class="text-lg font-semibold mb-2 text-slate-700 dark:text-white"
             >
                 Topic Analysis
             </h3>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">
+            <p class="text-sm text-slate-600 dark:text-gray-300">
                 Explore bias and sentiment across multiple articles for a
                 specific topic.
             </p>
@@ -90,14 +90,14 @@ Analyzer{% endblock %} {% block content %}
 <div id="analysisPage" class="hidden">
     <div class="max-w-5xl mx-auto">
         <div
-            class="analysis-page-card bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-6 border border-gray-200 dark:border-gray-700"
+            class="analysis-page-card rounded-xl shadow-lg overflow-hidden mb-6 border"
         >
             <div class="p-6">
                 <div
                     class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4"
                 >
                     <h2
-                        class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3 sm:mb-0"
+                        class="text-xl font-semibold mb-3 sm:mb-0 text-slate-700 dark:text-white"
                     >
                         Analyze Content
                     </h2>
@@ -150,7 +150,7 @@ Analyzer{% endblock %} {% block content %}
                         placeholder="Paste a URL, text content, or enter a topic..."
                     ></textarea>
                     <div
-                        class="text-right text-sm text-gray-500 dark:text-gray-400 mt-1"
+                        class="text-right text-sm mt-1 text-gray-500 dark:text-gray-400"
                     >
                         <span id="charCount">0</span> /
                         <span id="charLimit">8000</span> Characters
@@ -159,7 +159,7 @@ Analyzer{% endblock %} {% block content %}
                 <div class="mt-4 flex justify-end">
                     <button
                         id="analyzeButton"
-                        class="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 transition duration-150 ease-in-out disabled:opacity-50"
+                        class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 transition duration-150 ease-in-out disabled:opacity-50"
                     >
                         <i class="fas fa-cogs mr-1 animate-spin hidden"></i>
                         <span class="button-text">Analyze</span>
@@ -171,23 +171,23 @@ Analyzer{% endblock %} {% block content %}
 
         <div
             id="loadingState"
-            class="analysis-page-card hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-6 border border-gray-200 dark:border-gray-700"
+            class="analysis-page-card hidden rounded-xl shadow-lg overflow-hidden mb-6 border"
         >
             <div class="p-6">
                 <div class="flex flex-col items-center text-center">
                     <div class="mb-4">
                         <i
-                            class="fas fa-spinner fa-spin text-blue-500 dark:text-blue-400 text-4xl"
+                            class="fas fa-spinner fa-spin text-indigo-500 dark:text-indigo-400 text-4xl"
                         ></i>
                     </div>
                     <h3
-                        class="text-xl font-medium text-gray-800 dark:text-gray-100 mb-2"
+                        class="text-xl font-medium mb-2 text-slate-700 dark:text-white"
                     >
                         Analyzing Content
                     </h3>
                     <p
-                        class="text-gray-500 dark:text-gray-400"
                         id="loadingMessage"
+                        class="text-slate-600 dark:text-gray-400"
                     >
                         Processing your input, please wait... (This may take a
                         moment)
@@ -198,7 +198,7 @@ Analyzer{% endblock %} {% block content %}
 
         <div
             id="errorState"
-            class="analysis-page-card hidden bg-red-50 dark:bg-opacity-10 border border-red-300 dark:border-red-700 rounded-xl shadow-lg overflow-hidden mb-6"
+            class="analysis-page-card hidden bg-red-50 dark:bg-red-900 dark:bg-opacity-10 border-red-300 dark:border-red-700 rounded-xl shadow-lg overflow-hidden mb-6"
         >
             <div class="p-6">
                 <div class="flex items-center">
@@ -233,20 +233,21 @@ Analyzer{% endblock %} {% block content %}
         <div id="resultsSection" class="hidden">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div
-                    class="result-card p-4 rounded-lg shadow-sm transition-all hover:shadow-md"
+                    class="result-card p-4 rounded-lg shadow-sm transition-all hover:shadow-md border"
                 >
                     <div class="flex items-center mb-2">
                         <div class="p-2 rounded-full mr-3" id="biasIconBg">
                             <i class="fas fa-balance-scale" id="biasIcon"></i>
                         </div>
-                        <h3
-                            class="font-medium text-gray-900 dark:text-gray-100"
-                        >
+                        <h3 class="font-medium text-slate-700 dark:text-white">
                             Political Bias
                         </h3>
                     </div>
                     <div class="ml-11">
-                        <p class="text-2xl font-semibold mb-1" id="biasLabel">
+                        <p
+                            class="text-2xl font-semibold mb-1 text-slate-700 dark:text-white"
+                            id="biasLabel"
+                        >
                             N/A
                         </p>
                         <div
@@ -263,7 +264,7 @@ Analyzer{% endblock %} {% block content %}
                             </div>
                         </div>
                         <p
-                            class="text-xs text-gray-500 dark:text-gray-400 mt-1"
+                            class="text-xs mt-1 text-gray-500 dark:text-gray-400"
                             id="biasScore"
                         >
                             Confidence: 0%
@@ -271,21 +272,19 @@ Analyzer{% endblock %} {% block content %}
                     </div>
                 </div>
                 <div
-                    class="result-card p-4 rounded-lg shadow-sm transition-all hover:shadow-md"
+                    class="result-card p-4 rounded-lg shadow-sm transition-all hover:shadow-md border"
                 >
                     <div class="flex items-center mb-2">
                         <div class="p-2 rounded-full mr-3" id="sentimentIconBg">
                             <i class="fas fa-smile" id="sentimentIcon"></i>
                         </div>
-                        <h3
-                            class="font-medium text-gray-900 dark:text-gray-100"
-                        >
+                        <h3 class="font-medium text-slate-700 dark:text-white">
                             Sentiment
                         </h3>
                     </div>
                     <div class="ml-11">
                         <p
-                            class="text-2xl font-semibold mb-1"
+                            class="text-2xl font-semibold mb-1 text-slate-700 dark:text-white"
                             id="sentimentLabel"
                         >
                             N/A
@@ -304,7 +303,7 @@ Analyzer{% endblock %} {% block content %}
                             </div>
                         </div>
                         <p
-                            class="text-xs text-gray-500 dark:text-gray-400 mt-1"
+                            class="text-xs mt-1 text-gray-500 dark:text-gray-400 hidden"
                             id="sentimentScore"
                         >
                             Confidence: 0%
@@ -312,26 +311,31 @@ Analyzer{% endblock %} {% block content %}
                     </div>
                 </div>
                 <div
-                    class="result-card p-4 rounded-lg shadow-sm transition-all hover:shadow-md"
+                    class="result-card p-4 rounded-lg shadow-sm transition-all hover:shadow-md border"
                 >
                     <div class="flex items-center mb-2">
                         <div
-                            class="p-2 bg-purple-100 dark:bg-opacity-20 rounded-full mr-3 flex-shrink-0"
+                            class="p-2 bg-purple-100 dark:bg-purple-500 dark:bg-opacity-20 rounded-full mr-3 flex-shrink-0"
                         >
                             <i
                                 class="fas fa-check-circle text-purple-500 dark:text-purple-400"
                             ></i>
                         </div>
-                        <h3
-                            class="font-medium text-gray-900 dark:text-gray-100"
-                        >
+                        <h3 class="font-medium text-slate-700 dark:text-white">
                             Credibility Assessment
                         </h3>
                     </div>
                     <div class="ml-11">
+                        <div
+                            id="credibilityLevelDisplay"
+                            class="text-xl font-bold mb-1"
+                        >
+                            <span class="level-text">Medium</span>
+                            <span class="level-emoji">🤔</span>
+                        </div>
                         <p
                             id="credibilityAssessmentText"
-                            class="text-sm text-gray-700 dark:text-gray-300"
+                            class="text-xs text-gray-500 dark:text-gray-400"
                         >
                             Loading...
                         </p>
@@ -340,16 +344,16 @@ Analyzer{% endblock %} {% block content %}
             </div>
 
             <div
-                class="analysis-page-card bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-6 border border-gray-200 dark:border-gray-700"
+                class="analysis-page-card rounded-xl shadow-lg overflow-hidden mb-6 border"
             >
                 <div class="p-6">
                     <h2
-                        class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-1"
+                        class="text-xl font-semibold mb-1 text-slate-700 dark:text-white"
                     >
                         Analysis Details
                     </h2>
                     <p
-                        class="text-sm text-gray-500 dark:text-gray-400 mb-4 break-all"
+                        class="text-sm mb-4 break-all text-gray-500 dark:text-gray-400"
                         id="analysisSource"
                     >
                         Source: N/A
@@ -364,20 +368,20 @@ Analyzer{% endblock %} {% block content %}
                         >
                             <button
                                 id="summaryTab"
-                                class="analysis-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm"
+                                class="analysis-tab whitespace-nowrap py-3 px-1 font-medium text-sm"
                                 aria-current="page"
                             >
                                 Summary
                             </button>
                             <button
                                 id="findingsTab"
-                                class="analysis-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm"
+                                class="analysis-tab whitespace-nowrap py-3 px-1 font-medium text-sm"
                             >
                                 Findings & Indicators
                             </button>
                             <button
                                 id="visualsTab"
-                                class="analysis-tab whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm"
+                                class="analysis-tab whitespace-nowrap py-3 px-1 font-medium text-sm"
                             >
                                 Visualizations
                             </button>
@@ -387,23 +391,23 @@ Analyzer{% endblock %} {% block content %}
                     <div>
                         <div id="summaryContent" class="analysis-content">
                             <h3
-                                class="font-semibold text-gray-800 dark:text-gray-100 mb-2"
+                                class="font-semibold mb-2 text-slate-700 dark:text-white"
                             >
                                 Generated Summary
                             </h3>
                             <div
-                                class="prose prose-sm dark:prose-invert max-w-none p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600"
+                                class="summary-container prose prose-sm dark:prose-invert max-w-none p-3 rounded-md border"
                             >
                                 <p
                                     id="contentSummary"
-                                    class="text-gray-700 dark:text-gray-200"
+                                    class="text-slate-700 dark:text-white"
                                 >
                                     Generating summary...
                                 </p>
                             </div>
                             <div id="recommendedSearchesContainer" class="mt-6">
                                 <h4
-                                    class="font-medium mb-3 text-gray-800 dark:text-gray-100"
+                                    class="font-medium mb-3 text-slate-700 dark:text-white"
                                 >
                                     Recommended Searches
                                 </h4>
@@ -412,7 +416,7 @@ Analyzer{% endblock %} {% block content %}
                                     class="flex flex-wrap gap-2"
                                 >
                                     <span
-                                        class="cursor-pointer px-3 py-1 rounded-full text-sm animate-pulse bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200"
+                                        class="cursor-pointer px-3 py-1 rounded-full text-sm animate-pulse"
                                         >Loading...</span
                                     >
                                 </div>
@@ -426,16 +430,16 @@ Analyzer{% endblock %} {% block content %}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <h3
-                                        class="font-semibold text-gray-800 dark:text-gray-100 mb-3"
+                                        class="font-semibold mb-3 text-slate-700 dark:text-white"
                                     >
                                         Key Findings
                                     </h3>
                                     <div
-                                        class="prose prose-sm dark:prose-invert bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 min-h-[150px]"
+                                        class="prose prose-sm bg-gray-50 dark:bg-slate-700 p-4 rounded-lg border border-gray-200 dark:border-slate-600 min-h-[150px]"
                                     >
                                         <ul
                                             id="keyFindings"
-                                            class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-200 text-sm"
+                                            class="list-disc list-inside space-y-2 text-sm text-slate-700 dark:text-white"
                                         >
                                             <li>Analyzing content...</li>
                                         </ul>
@@ -443,16 +447,16 @@ Analyzer{% endblock %} {% block content %}
                                 </div>
                                 <div>
                                     <h3
-                                        class="font-semibold text-gray-800 dark:text-gray-100 mb-3"
+                                        class="font-semibold mb-3 text-slate-700 dark:text-white"
                                     >
                                         Bias Indicators (LLM Generated)
                                     </h3>
                                     <div
                                         id="biasIndicators"
-                                        class="prose prose-sm dark:prose-invert space-y-3 text-sm bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 min-h-[150px]"
+                                        class="prose prose-sm dark:prose-invert space-y-3 text-sm bg-gray-50 dark:bg-slate-700 p-4 rounded-lg border border-gray-200 dark:border-slate-600 min-h-[150px]"
                                     >
                                         <p
-                                            class="text-gray-500 dark:text-gray-400"
+                                            class="text-slate-600 dark:text-gray-400"
                                         >
                                             Loading indicators...
                                         </p>
@@ -468,13 +472,13 @@ Analyzer{% endblock %} {% block content %}
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 <div>
                                     <h4
-                                        class="font-medium text-center mb-2 text-gray-800 dark:text-gray-100"
+                                        class="font-medium text-center mb-2 text-slate-700 dark:text-white"
                                     >
-                                        Sentiment Distribution
+                                        Sentiment Distribution (Binary)
                                     </h4>
                                     <div
                                         id="sentimentChartContainer"
-                                        class="w-full h-64 md:h-80 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                        class="w-full h-64 md:h-80 rounded-md border flex items-center justify-center"
                                     >
                                         <div
                                             id="sentimentChart"
@@ -484,13 +488,13 @@ Analyzer{% endblock %} {% block content %}
                                 </div>
                                 <div>
                                     <h4
-                                        class="font-medium text-center mb-2 text-gray-800 dark:text-gray-100"
+                                        class="font-medium text-center mb-2 text-slate-700 dark:text-white"
                                     >
                                         Political Bias Distribution
                                     </h4>
                                     <div
                                         id="biasChartContainer"
-                                        class="w-full h-64 md:h-80 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 flex items-center justify-center"
+                                        class="w-full h-64 md:h-80 rounded-md border flex items-center justify-center"
                                     >
                                         <div
                                             id="biasChart"
@@ -506,7 +510,7 @@ Analyzer{% endblock %} {% block content %}
             <div class="flex justify-end space-x-3">
                 <button
                     id="newAnalysisBtn"
-                    class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
+                    class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition duration-150 ease-in-out"
                 >
                     <i class="fas fa-plus mr-1"></i> New Analysis
                 </button>

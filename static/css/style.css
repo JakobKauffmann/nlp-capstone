@@ -26,7 +26,7 @@
     --ctp-latte-surface0: #ccd0da; /* Input BG Light */
     --ctp-latte-base: #eff1f5; /* BG Light */
     --ctp-latte-mantle: #e6e9ef; /* Card BG Light */
-    --ctp-latte-crust: #dce0e8;
+    --ctp-latte-crust: #dce0e8; /* Chart BG Light / Summary BG Light */
 
     /* Mocha (Dark Mode) */
     --ctp-mocha-rosewater: #f5e0dc;
@@ -53,7 +53,7 @@
     --ctp-mocha-surface1: #45475a; /* Borders Dark */
     --ctp-mocha-surface0: #313244; /* Card BG / Input BG Dark */
     --ctp-mocha-base: #1e1e2e; /* BG Dark */
-    --ctp-mocha-mantle: #181825;
+    --ctp-mocha-mantle: #181825; /* Chart BG Dark / Summary BG Dark */
     --ctp-mocha-crust: #11111b;
 
     /* --- Theme Agnostic Variables --- */
@@ -61,11 +61,12 @@
     --bg: var(--ctp-latte-base);
     --card-bg: var(--ctp-latte-mantle);
     --input-bg: var(--ctp-latte-surface0);
+    --summary-bg: var(--ctp-latte-crust); /* Use Crust for summary bg */
     --text: var(--ctp-latte-text);
     --text-muted: var(--ctp-latte-subtext0);
     --border: var(--ctp-latte-overlay0);
-    --accent: var(--ctp-latte-mauve);
-    --accent-text: var(--ctp-latte-base);
+    --accent: var(--ctp-mocha-mauve);
+    --accent-text: var(--ctp-latte-text);
     --chart-bg: var(--ctp-latte-crust);
     --tag-bg: var(--ctp-latte-surface1);
     --tag-text: var(--ctp-latte-subtext1);
@@ -73,6 +74,9 @@
     --button-secondary-bg: var(--ctp-latte-surface0);
     --button-secondary-hover-bg: var(--ctp-latte-surface1);
     --button-secondary-text: var(--text);
+    --cred-high-text: var(--ctp-latte-green);
+    --cred-medium-text: var(--ctp-latte-yellow);
+    --cred-low-text: var(--ctp-latte-red);
 
     /* Default Font */
     font-family:
@@ -92,23 +96,27 @@
         "Noto Color Emoji";
 }
 
-/* Apply dark mode variables when .dark class is present */
+/* Apply dark mode variables */
 .dark {
     --bg: var(--ctp-mocha-base);
-    --card-bg: var(--ctp-mocha-surface0);
+    --card-bg: var(--ctp-mocha-mantle);
     --input-bg: var(--ctp-mocha-surface0);
+    --summary-bg: var(--ctp-mocha-crust); /* Use Crust for summary bg */
     --text: var(--ctp-mocha-text);
     --text-muted: var(--ctp-mocha-subtext0);
-    --border: var(--ctp-mocha-surface1);
+    --border: var(--ctp-mocha-overlay0);
     --accent: var(--ctp-mocha-mauve);
-    --accent-text: var(--ctp-mocha-base);
-    --chart-bg: var(--ctp-mocha-mantle);
-    --tag-bg: var(--ctp-mocha-surface2);
+    --accent-text: var(--ctp-mocha-text);
+    --chart-bg: var(--ctp-mocha-crust);
+    --tag-bg: var(--ctp-mocha-surface1);
     --tag-text: var(--ctp-mocha-subtext1);
-    --tag-hover-bg: var(--ctp-mocha-overlay0);
-    --button-secondary-bg: var(--ctp-mocha-surface1);
-    --button-secondary-hover-bg: var(--ctp-mocha-surface2);
-    --button-secondary-text: var(--text);
+    --tag-hover-bg: var(--ctp-mocha-surface2);
+    --button-secondary-bg: var(--ctp-mocha-surface0);
+    --button-secondary-hover-bg: var(--ctp-mocha-surface1);
+    --button-secondary-text: var(--ctp-mocha-text);
+    --cred-high-text: var(--ctp-mocha-green);
+    --cred-medium-text: var(--ctp-mocha-yellow);
+    --cred-low-text: var(--ctp-mocha-red);
 }
 
 /* Apply base theme variables */
@@ -120,33 +128,26 @@ body {
         color 0.2s ease-out;
 }
 
-/* --- Layout & Core Elements Styling using Variables --- */
-/* Use Tailwind classes in HTML for layout (flex, grid, w-*, h-*, etc.) */
-/* Custom CSS mainly for variable application and transitions */
-
+/* --- Layout & Core Elements Styling --- */
 .sidebar {
     background-color: var(--card-bg);
     border-color: var(--border);
     transition: transform 0.3s ease-in-out;
 }
-
 header {
     background-color: var(--card-bg);
     border-color: var(--border);
 }
-
 main {
     background-color: var(--bg);
 }
-
 .analysis-page-card,
 .result-card {
     background-color: var(--card-bg);
     border-color: var(--border);
-    /* Apply Tailwind shadow/border/rounding in HTML */
 }
 
-/* --- Component Styling using Variables --- */
+/* --- Component Styling --- */
 
 /* Input Type Buttons */
 .input-type-btn {
@@ -155,7 +156,6 @@ main {
     transition:
         background-color 0.15s ease-in-out,
         color 0.15s ease-in-out;
-    /* Apply Tailwind padding/rounding/flex in HTML */
 }
 .input-type-btn:hover {
     background-color: var(--button-secondary-hover-bg);
@@ -173,7 +173,6 @@ main {
     transition:
         color 0.15s ease-in-out,
         border-color 0.15s ease-in-out;
-    /* Apply Tailwind padding/font/whitespace in HTML */
 }
 .analysis-tab:hover {
     border-color: var(--border);
@@ -185,7 +184,6 @@ main {
 }
 
 /* History Item Links */
-/* Target the span within the link for color change */
 .history-item span {
     color: var(--text);
     transition: color 0.15s ease-in-out;
@@ -193,7 +191,6 @@ main {
 .history-item:hover span {
     color: var(--accent);
 }
-/* Ensure muted text in history also uses variables */
 .history-item .text-xs {
     color: var(--text-muted);
 }
@@ -204,7 +201,6 @@ main {
     transition: background-color 0.15s ease-in-out;
     background-color: var(--tag-bg);
     color: var(--tag-text);
-    /* Apply Tailwind padding/rounding/font-size/cursor in HTML */
 }
 #recommendedSearches span:hover {
     background-color: var(--tag-hover-bg);
@@ -216,7 +212,6 @@ main {
     min-height: 300px;
     background-color: var(--chart-bg);
     border: 1px solid var(--border);
-    /* Apply Tailwind rounding in HTML */
 }
 
 /* Input Textarea Styling */
@@ -227,7 +222,6 @@ main {
     transition:
         border-color 0.15s ease-in-out,
         box-shadow 0.15s ease-in-out;
-    /* Apply Tailwind padding/rounding/width in HTML */
 }
 #contentInput::placeholder {
     color: var(--text-muted);
@@ -236,8 +230,44 @@ main {
 #contentInput:focus {
     outline: none;
     border-color: var(--accent);
-    /* Simulate Tailwind focus ring */
     box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* Summary Container Background */
+.summary-container {
+    /* Add this class to the div wrapping the summary <p> */
+    background-color: var(--summary-bg);
+    border-color: var(--border);
+    /* Apply Tailwind padding/rounding/border in HTML */
+}
+/* Ensure prose text color is correct */
+.summary-container .prose {
+    color: var(--text);
+}
+.dark .summary-container .dark\:prose-invert {
+    color: var(--text); /* Ensure dark mode prose text uses main text color */
+}
+/* Override specific prose elements if needed */
+.summary-container .prose p {
+    color: var(--text);
+}
+
+/* Credibility Display */
+#credibilityLevelDisplay {
+    /* Tailwind classes for size/weight applied in HTML */
+    /* Color applied dynamically via JS */
+}
+.cred-high {
+    color: var(--cred-high-text);
+}
+.cred-medium {
+    color: var(--cred-medium-text);
+}
+.cred-low {
+    color: var(--cred-low-text);
+}
+#credibilityAssessmentText {
+    color: var(--text-muted); /* Muted color for the detailed text */
 }
 
 /* --- Custom Styles & Overrides --- */
@@ -264,37 +294,33 @@ main {
 }
 
 /* --- Badge Color Overrides (Catppuccin) --- */
-/* Using CSS variables for cleaner overrides */
 :root {
     --badge-blue-bg: rgba(30, 102, 245, 0.1);
-    --badge-blue-text: #1e66f5;
+    --badge-blue-text: #1e66f5; /* Blue */
     --badge-red-bg: rgba(210, 15, 57, 0.1);
-    --badge-red-text: #d20f39;
+    --badge-red-text: #d20f39; /* Red */
     --badge-yellow-bg: rgba(223, 142, 29, 0.1);
-    --badge-yellow-text: #df8e1d;
+    --badge-yellow-text: #df8e1d; /* Yellow */
     --badge-green-bg: rgba(64, 160, 43, 0.1);
-    --badge-green-text: #40a02b;
+    --badge-green-text: #40a02b; /* Green */
     --badge-gray-bg: #bcc0cc;
-    --badge-gray-text: #5c5f77;
+    --badge-gray-text: #5c5f77; /* Surface1 / Subtext1 */
 }
 .dark {
-    --badge-blue-bg: rgba(137, 180, 250, 0.15);
-    --badge-blue-text: #89b4fa;
-    --badge-red-bg: rgba(243, 139, 168, 0.15);
-    --badge-red-text: #f38ba8;
-    --badge-yellow-bg: rgba(249, 226, 175, 0.15);
-    --badge-yellow-text: #f9e2af;
-    --badge-green-bg: rgba(166, 227, 161, 0.15);
-    --badge-green-text: #a6e3a1;
+    --badge-blue-bg: rgba(137, 180, 250, 0.5);
+    --badge-blue-text: #89b4fa; /* Blue */
+    --badge-red-bg: rgba(243, 139, 168, 0.5);
+    --badge-red-text: #f38ba8; /* Red */
+    --badge-yellow-bg: rgba(249, 226, 175, 0.5);
+    --badge-yellow-text: #f9e2af; /* Yellow */
+    --badge-green-bg: rgba(166, 227, 161, 0.5);
+    --badge-green-text: #a6e3a1; /* Green */
     --badge-gray-bg: #45475a;
-    --badge-gray-text: #a6adc8;
+    --badge-gray-text: #a6adc8; /* Surface1 / Subtext0 */
 }
-/* Apply badge styles - Use specific classes if possible, fallback to overriding Tailwind */
 .badge {
-    /* Add a common .badge class to your spans in HTML */
     background-color: var(--badge-gray-bg);
     color: var(--badge-gray-text);
-    /* Apply Tailwind padding/rounding/font in HTML */
 }
 .badge-blue {
     background-color: var(--badge-blue-bg);
@@ -313,9 +339,19 @@ main {
     color: var(--badge-green-text);
 }
 
-/* Fallback Overrides for Tailwind classes if needed (Less ideal) */
-/*
-.bg-blue-100 { background-color: var(--badge-blue-bg) !important; }
-.text-blue-800 { color: var(--badge-blue-text) !important; }
-... etc ...
-*/
+/* Specific Text Color Overrides */
+.dark #biasIndicators p,
+.dark #keyFindings li {
+    color: var(--text);
+}
+.dark #biasIndicators p {
+    background-color: var(--ctp-mocha-surface1);
+    border-color: var(--border);
+}
+/* Fix for light mode text visibility issues */
+.text-slate-700 {
+    color: #334155 !important;
+}
+.text-slate-600 {
+    color: #475569 !important;
+}
