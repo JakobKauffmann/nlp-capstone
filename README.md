@@ -27,9 +27,9 @@ The application outputs the following for the analyzed text:
 * **Visualizations**: Displays interactive charts showing sentiment and bias distribution (more relevant for topic analysis).
 * **History**: Saves recent analyses for easy review and reloading.
 
-## Screenshot
+## Political Bias and Sentiment Detection Web App 
+Homepage of the App
 
-*(Replace the path below with the actual path to your UI screenshot)*
 ![UI Screenshot](docs/screenshot.png)
 
 ## Models Used
@@ -110,26 +110,30 @@ This application utilizes a hybrid approach, combining specialized models hosted
 
 
 nlp-capstone/
-├── app.py                  # Main Flask application logic
+├── app.py                 # Main Flask application (backend logic)
 ├── web_scraper/
 │   └── main.py             # Web scraping and DuckDuckGo search functions
 ├── templates/
-│   ├── base.html           # Base HTML template with layout
-│   └── index.html          # Main page content
+│   ├── base.html           # Base HTML template (common layout)
+│   └── index.html          # Main homepage for user input and results
 ├── static/
 │   ├── css/
-│   │   └── style.css       # Custom CSS and theme variables
+│   │   └── style.css       # Custom CSS styles and theme variables
 │   ├── js/
 │   │   └── script.js       # Frontend JavaScript logic
 │   ├── data/
-│   │   └── history.json    # Stores analysis history (created automatically)
-│   └── images/             # Place logos (light-logo.svg, dark-logo.svg) and favicon.ico here
-├── docs/                   # Optional: Create this folder for screenshots etc.
-│   └── screenshot.png      # Add your UI screenshot here
+│   │   └── history.json    # Stores previous analysis history (auto-created)
+│   └── images/
+│       ├── light-logo.svg
+│       ├── dark-logo.svg
+│       └── favicon.ico     # App icons and logos
+├── docs/
+│   └── screenshot.png      # UI Screenshot (for README display)
 ├── requirements.txt        # Python dependencies
-├── .env                    # Stores API keys (Needs to be created manually)
-├── .gitignore              # Specifies intentionally untracked files (add .env here)
-└── README.md               # This file
+├── .env                    # API keys (you must create manually)
+├── .gitignore              # Files to ignore in Git (e.g., .env, __pycache__)
+└── README.md               # Project overview and instructions
+
 
 
 ## Notes
