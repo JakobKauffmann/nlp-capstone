@@ -26,7 +26,7 @@ The application outputs the following for the analyzed text:
 * **Recommended Searches**: Suggests related search terms for further exploration.
 * **Visualizations**: Displays interactive charts showing sentiment and bias distribution (more relevant for topic analysis).
 * **History**: Saves recent analyses for easy review and reloading.
-![UI Screenshot](docs/sample_result.png)
+![UI Screenshot](docs/result_sample.png)
 ![UI Screenshot](docs/visualizations_sample.png)
 
 ## Political Bias and Sentiment Detection Web App 
