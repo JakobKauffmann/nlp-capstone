@@ -1,53 +1,5 @@
 [
   {
-    "id": 1745879892393,
-    "date": "2025-04-28 15:38:12",
-    "input_type": "topic",
-    "input_value": "climate change",
-    "results": {
-      "bias": "Error",
-      "sentiment": "Error",
-      "bias_value": 0,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745879003766,
-    "date": "2025-04-28 15:23:23",
-    "input_type": "topic",
-    "input_value": "Trump Tariffs",
-    "results": {
-      "bias": "Error",
-      "sentiment": "Error",
-      "bias_value": 0,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745878963271,
-    "date": "2025-04-28 15:22:43",
-    "input_type": "text",
-    "input_value": "Trump says he won't reduce tariffs on China without something 'substantial'\nDuring a press gaggle on...",
-    "results": {
-      "bias": "Error",
-      "sentiment": "Error",
-      "bias_value": 0,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745878927206,
-    "date": "2025-04-28 15:22:07",
-    "input_type": "text",
-    "input_value": "Trump says he won't reduce tariffs on China without something 'substantial'\nDuring a press gaggle on...",
-    "results": {
-      "bias": "Error",
-      "sentiment": "Error",
-      "bias_value": 0,
-      "sentiment_value": 0
-    }
-  },
-  {
     "id": 1745643938796,
     "date": "2025-04-25 22:05:38",
     "input_type": "topic",
