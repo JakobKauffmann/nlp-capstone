@@ -1,31 +1,67 @@
 [
   {
-    "id": 1745633519583,
-    "date": "2025-04-25 19:11:59",
+    "id": 1745879892393,
+    "date": "2025-04-28 15:38:12",
     "input_type": "topic",
     "input_value": "climate change",
     "results": {
-      "bias": "Left",
-      "sentiment": "Positive",
-      "bias_value": 86,
-      "sentiment_value": 100
+      "bias": "Error",
+      "sentiment": "Error",
+      "bias_value": 0,
+      "sentiment_value": 0
+    }
+  },
+  {
+    "id": 1745879003766,
+    "date": "2025-04-28 15:23:23",
+    "input_type": "topic",
+    "input_value": "Trump Tariffs",
+    "results": {
+      "bias": "Error",
+      "sentiment": "Error",
+      "bias_value": 0,
+      "sentiment_value": 0
+    }
+  },
+  {
+    "id": 1745878963271,
+    "date": "2025-04-28 15:22:43",
+    "input_type": "text",
+    "input_value": "Trump says he won't reduce tariffs on China without something 'substantial'\nDuring a press gaggle on...",
+    "results": {
+      "bias": "Error",
+      "sentiment": "Error",
+      "bias_value": 0,
+      "sentiment_value": 0
+    }
+  },
+  {
+    "id": 1745878927206,
+    "date": "2025-04-28 15:22:07",
+    "input_type": "text",
+    "input_value": "Trump says he won't reduce tariffs on China without something 'substantial'\nDuring a press gaggle on...",
+    "results": {
+      "bias": "Error",
+      "sentiment": "Error",
+      "bias_value": 0,
+      "sentiment_value": 0
+    }
+  },
+  {
+    "id": 1745643938796,
+    "date": "2025-04-25 22:05:38",
+    "input_type": "topic",
+    "input_value": "Trump Tariffs",
+    "results": {
+      "bias": "Center",
+      "sentiment": "Negative",
+      "bias_value": 57,
+      "sentiment_value": 0
     }
   },
   {
     "id": 1745633518121,
     "date": "2025-04-25 19:11:58",
-    "input_type": "topic",
-    "input_value": "climate change",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Positive",
-      "bias_value": 86,
-      "sentiment_value": 100
-    }
-  },
-  {
-    "id": 1745633458620,
-    "date": "2025-04-25 19:10:58",
     "input_type": "topic",
     "input_value": "climate change",
     "results": {
@@ -45,198 +81,6 @@
       "sentiment": "Negative",
       "bias_value": 45,
       "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745633134556,
-    "date": "2025-04-25 19:05:34",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745633046277,
-    "date": "2025-04-25 19:04:06",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745632990642,
-    "date": "2025-04-25 19:03:10",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745632974818,
-    "date": "2025-04-25 19:02:54",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745632778714,
-    "date": "2025-04-25 18:59:38",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745632081677,
-    "date": "2025-04-25 18:48:01",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745631921842,
-    "date": "2025-04-25 18:45:21",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745628863553,
-    "date": "2025-04-25 17:54:23",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745627888831,
-    "date": "2025-04-25 17:38:08",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745627858012,
-    "date": "2025-04-25 17:37:38",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745627713338,
-    "date": "2025-04-25 17:35:13",
-    "input_type": "url",
-    "input_value": "https://americansongwriter.com/3-times-that-big-brands-used-songs-illegally-and-got-sued-for-it/",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Negative",
-      "bias_value": 45,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745627493157,
-    "date": "2025-04-25 17:31:33",
-    "input_type": "url",
-    "input_value": "https://www.cnn.com/2025/04/09/business/reciprocal-tariff-pause-trump/index.html",
-    "results": {
-      "bias": "Right",
-      "sentiment": "Positive",
-      "bias_value": 81,
-      "sentiment_value": 100
-    }
-  },
-  {
-    "id": 1745352038632,
-    "date": "2025-04-22 13:00:38",
-    "input_type": "url",
-    "input_value": "https://www.cnn.com/2025/04/09/business/reciprocal-tariff-pause-trump/index.html",
-    "results": {
-      "bias": "Right",
-      "sentiment": "Positive",
-      "bias_value": 81,
-      "sentiment_value": 73
-    }
-  },
-  {
-    "id": 1745351885254,
-    "date": "2025-04-22 12:58:05",
-    "input_type": "url",
-    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
-    "results": {
-      "bias": "Error",
-      "sentiment": "Error",
-      "bias_value": 0,
-      "sentiment_value": 0
-    }
-  },
-  {
-    "id": 1745276683899,
-    "date": "2025-04-21 16:04:43",
-    "input_type": "topic",
-    "input_value": "climate change",
-    "results": {
-      "bias": "Left",
-      "sentiment": "Positive",
-      "bias_value": 86,
-      "sentiment_value": 99
-    }
-  },
-  {
-    "id": 1745276662226,
-    "date": "2025-04-21 16:04:22",
-    "input_type": "url",
-    "input_value": "https://www.cnn.com/2025/04/21/europe/cardinal-kevin-farrell-camerlengo-pope-francis-intl/index.html",
-    "results": {
-      "bias": "Center",
-      "sentiment": "Positive",
-      "bias_value": 44,
-      "sentiment_value": 98
     }
   }
 ]
